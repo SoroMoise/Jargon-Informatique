@@ -1,0 +1,105 @@
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+
+<CustomOneLineListItem>:
+	OneLineListItem:
+		text: root.text
+
+<ContentNavigationDrawer>:
+
+	orientation: "vertical"
+	padding: dp(20)
+	spacing: dp(10)
+
+	MDTextField:
+		id: textfield
+		hint_text: "Saisisez le mot a recherchrer"
+		font_size: 20
+		on_text_validate:
+			print("valid")
+		on_focus:
+			root.on_focus()
+		on_disabled:
+			print("disable")
+
+	ScrollView:
+		orientation: "vertical"
+		padding: "15dp"
+        MDList:
+            id: list_items
+            padding: 30
+            MDLabel:
+            	text: "le text"
+
+
+<MainScreen>
+	MDBoxLayout
+		orientation: "vertical"
+		MDBoxLayout:
+			orientation: "horizontal"
+			md_bg_color: get_color_from_hex("#7aa6ff")
+			size_hint: 1, 0.08
+			MDIconButton:
+				icon: "magnify"
+				on_press:
+
+		MDBoxLayout:
+			orientation: "vertical"
+			MDLabel:
+				text: "le mot du jour"
+
+
+
+
+	MDNavigationDrawer:
+		id: nav_drawer
+
+		ContentNavigationDrawer:
+			#screen_manager: screen_manager
+			nav_drakwer: nav_drawer
+
+<ItemsScreen>
+	MDLabel:
+		text: "le contenue des items"
+
+<EcranSaisie>
+
+	BoxLayout:
+		id: tout
+		orientation: "vertical"
+		MDBoxLayout:
+			orientation: "horizontal"
+			md_bg_color: get_color_from_hex("7aa6ff")
+			size_hint: 1, 0.08
+			padding: 8
+			spacing: 30
+			MDIcon:
+				icon: "link-variant-plus"
+				size_hint_x: 0.07
+				size_hint_min_x: 0.06
+				halign: "center"
+				font_size: 45
+			MDTextFieldRound:
+				hint_text: "Saisisez le mot a recherchrer"
+				#md_bg_color: get_color_from_hex('#ffffff')
+				text_color: get_color_from_hex("#ffffff")
+				normal_color: get_color_from_hex("#7aa6ff")
+				#icon_right: "magnify"
+				pos_hint: {"center_x": .5, "center_y": .5}
+				focus: root.focus
+				font_size: 45
+				on_text_validate:
+					print("valid")
+				on_focus:
+					#root.on_focus()
+
+
+        MDBoxLayout:
+        	orientation: "vertical"
+        	id: contenue
+        	height: 1
+        	MDLabel:
+        		text: "Bienvenue dans Jargon Informatique\nversion Android"
+				halign: "center"
+        		font_size: 40
+        		color: get_color_from_hex("#4e97bc")
+        		bold: True
