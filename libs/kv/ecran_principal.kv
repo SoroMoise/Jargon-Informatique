@@ -1,0 +1,111 @@
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+
+<MainScreen>
+	MDNavigationLayout:
+		ScreenManager:
+			id: sm
+			Screen:
+				MDBoxLayout:
+					orientation: "vertical"
+					MDToolbar:
+						id: toolbar
+						title: "Jargon Informatique"
+						anchor_title: "center"
+						md_bg_color: get_color_from_hex("#7aa6ff")
+						left_action_items: [["magnify", lambda x: [root.recherche(), root.children[0].children[0].children[0].voir_list_mots(button_recherche=True)]]]
+						right_action_items: [["dots-vertical", lambda x: app.affiche_menu(x)]]
+
+					MDBoxLayout:  # la bare contenant le mot definit
+						orientation: "vertical"
+						id: le_contenu
+						MDBoxLayout:
+							md_bg_color: get_color_from_hex("#70a0f0")
+							size_hint: 1, 0.08
+							padding: [30, 5, 5, 5]
+							MDLabel:
+								id: id_kv_mot
+								text: str(root.mot)
+								#font_size: 18
+								color: get_color_from_hex("#ffffff")
+								bold: True
+						MDBoxLayout:
+							padding: [1, 10]
+							ScrollView:
+								do_scroll_x: False
+								do_scroll_y: True
+								padding: [12, 40]
+								bar_width: 5
+								bar_margin: 5
+								bar_color: get_color_from_hex("#70a0f0")
+								bar_inactive_color: get_color_from_hex("#adc9ff")
+								scroll_type: ['bars', 'content']
+								MDLabel:
+									id: id_kv_definition
+									size_hint_y: None
+									padding: [15, 5]
+									height: self.texture_size[1]
+									text_size: self.width, None
+									#md_bg_color: get_color_from_hex("#ffffff")
+									text: str(root.definition)
+									#font_size: 20
+									halign: 'center'
+						MDBoxLayout:  # La bare d'en bas
+							radius: [40, 40, 0, 0]
+							#elevation: 30
+							md_bg_color: get_color_from_hex("#70a0f0")
+							padding: [self.width*0.04, 0, self.width*0.04, 0]
+							size_hint: 1, 0.06
+							MDBoxLayout:  # precedent
+								padding: [self.width*0.5-self.children[0].width/2, 0, 0, self.height*0.5-self.children[0].height/2]
+								MDIconButton:
+									id: chevron_left
+									icon: "chevron-left"
+									user_font_size: "35sp"
+									theme_text_color: "Custom"
+									text_color: [1, 1, 1, 1]
+									on_press:
+										root.mot_precedent()
+										print(self.width)
+							MDBoxLayout:  # J'aime
+								padding: [self.width*0.5-self.children[0].width/2, 0, 0, self.height*0.5-self.children[0].height/2]
+								MDIconButton:
+									id: button_aimer
+									icon: "heart"
+									user_font_size: "35sp"
+									theme_text_color: "Custom"
+									text_color: get_color_from_hex("#ffffff")
+									on_press:
+										root.aimer(True)
+							MDBoxLayout:  # Aleatoir
+								padding: [self.width*0.5-self.children[0].width/2, 0, 0, self.height*0.5-self.children[0].height/2]
+								MDIconButton:
+									icon: "shuffle-variant"
+									user_font_size: "35sp"
+									theme_text_color: "Custom"
+									text_color: [1, 1, 1, 1]
+									on_press:
+										root.recherche_aleatoir()
+							MDBoxLayout:  # Suivant
+								padding: [self.width*0.5-self.children[0].width/2, 0, 0, self.height*0.5-self.children[0].height/2]
+								#width: 50
+								MDIconButton:
+									icon: "chevron-right"
+									user_font_size: "35sp"
+									theme_text_color: "Custom"
+									text_color: [1, 1, 1, 1]
+									on_press:
+										root.mot_suivant()
+										#app.af()
+
+		MDNavigationDrawer:
+			id: nav_drawer
+			radius: [5, 30, 30, 5]
+			type: "modal"
+			#type: "standard"  # Pourais permetre de changer la façon dont la MDNavigationDrawer s'ouvre
+			md_bg_color: get_color_from_hex("#ffffff")
+
+			close_on_click: True
+
+			ContentNavigationDrawer:
+				screen_manager: sm
+				nav_drawer: "root.parent"
