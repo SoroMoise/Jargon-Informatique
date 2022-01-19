@@ -1,0 +1,27 @@
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+#:import toast kivymd.toast.toast
+
+<ListeElements>
+	MDBoxLayout:
+		orientation: "vertical"
+		MDToolbar:
+			id: toolbar
+			title: root.titre
+			md_bg_color: get_color_from_hex("#7aa6ff")
+			left_action_items: [["chevron-left", lambda x: [app.changer_ecran("main_screen", "right"), root.retour()]]]
+			right_action_items: [["delete-outline", lambda x: [root.dialog_tout_supprimer()]]]
+
+		MDBoxLayout:
+			orientation: "vertical"
+			padding: [10, 15, 10, 10]
+			id: le_contenu
+			ScrollView:
+				do_scroll_x: False
+				do_scroll_y: True
+				padding: [12, 40]
+				bar_width: 5
+				bar_margin: 5
+				MDList:
+					size_hint: 1, None
+					height: 25
+					id: id_liste_element
