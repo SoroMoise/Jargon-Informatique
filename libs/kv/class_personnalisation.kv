@@ -1,0 +1,133 @@
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+##:import afficher_definition libs.py.ecran_principal.MainScreen.afficher_definition
+#:import toast kivymd.toast.toast
+
+<APropos>
+	orientation: "vertical"
+	size_hint_y:None
+	height: app.height_sreen * 0.6
+	MDBoxLayout:
+		orientation: "vertical"
+		spacing: "20dp"
+		MDBoxLayout:  # Presentation
+			orientation: "vertical"
+			size_hint: 1, 0.3
+			MDBoxLayout:
+				orientation: "horizontal"
+				MDLabel:
+					size_hint_x: 0.3
+					text: "Auteur: "
+				MDLabel:
+					text: "Soro Colotcholoman Moïse"
+					bold: True
+			MDBoxLayout:
+				orientation: "horizontal"
+				MDLabel:
+					size_hint_x: 0.3
+					text: "Email: "
+				MDLabel:
+					text: "soromoise4@gmail.com"
+					bold: True
+					markup: True
+			MDBoxLayout:
+				orientation: "horizontal"
+				MDLabel:
+					size_hint_x: 0.3
+					text: "Url: "
+				MDLabel:
+					id: letexte
+					text: "Non disponible"
+		MDBoxLayout:
+			#md_bg_color: get_color_from_hex("#ffffff")
+			ScrollView:
+				do_scroll_x: False
+				do_scroll_y: True
+				bar_width: 2
+				bar_margin: 0
+				MDLabel:
+					height: self.texture_size[1]
+					size_hint_y: None
+					#text_size: self.width, None
+					text: root.a_propos
+
+
+<ContentNavigationDrawer>:
+    BoxLayout:
+    	id: le
+        orientation: 'vertical'
+        #spacing: dp(10)
+        padding: dp(10)
+
+        BoxLayout:
+            size_hint_y: None
+            height: self.minimum_height
+            padding: [0, 50, 0, 10]
+            orientation: "vertical"
+
+            MDTextFieldRect:
+                id: search_field
+                hint_text: 'Entrez le mot à rechercher'
+                mode: "fill"
+                #font_size: 20
+                size_hint: 1, None
+                height: "40dp"
+                active_line: True  # Permet de voire la ligne qui souigne le texte saisie
+                on_text:
+                	root.voir_list_mots(self.text, True)
+				on_focus:
+					root.voir_list_mots(button_recherche = True)
+				on_text_validate: pass
+
+
+		BoxLayout:
+			RecycleView:
+				id: rv
+				key_viewclass: 'viewclass'
+				key_size: 'height'
+				padding: [0, 100, 0, 10]
+				do_scroll_x: False
+				do_scroll_y: True
+				bar_margin: 0
+				bar_width: 5
+				bar_color: get_color_from_hex("#70a0f0")
+				bar_inactive_color: get_color_from_hex("#93c0ff")
+				scroll_type: ['content', 'bars']
+				#on_scroll_move:  # Peut etre exploiter
+				#	print("je moov")
+				RecycleBoxLayout:
+					#padding: dp(10)
+					default_size: None, dp(48)
+					default_size_hint: 1, None
+					size_hint_y: None
+					height: self.minimum_height
+					orientation: 'vertical'
+
+
+<CustomOneLineListItem>:
+	id: customoneline
+	text: root.text
+	on_press:
+		root.parent.parent.parent.parent.parent.parent.parent.parent.afficher_definition(idmot = self.text.lower(), faire_requete=True)
+
+
+<CustomOneLineRightIconListItem>:
+    size_hint_y: None
+    height: content.height
+    anchor: "right"
+    type_swipe: "auto"
+
+	OneLineRightIconListItem:
+		id: content
+		text: root.text
+		_no_ripple_effect: True
+		on_press:
+			root.parent.parent.parent.parent.parent.parent.get_screen("liste_elements").retour()
+			app.changer_ecran("main_screen", "right")
+			root.parent.parent.parent.parent.parent.parent.get_screen("main_screen").afficher_definition(idmot = self.text.lower(), faire_requete=True)
+		IconRightWidget:
+			icon: "close"
+			color: [1, 0, 0, 0.2]
+			on_release:
+				root.parent.parent.parent.parent.parent.suprimer(root.text)
+				root.parent.remove_widget(root)
+
