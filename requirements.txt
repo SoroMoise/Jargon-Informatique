@@ -1,0 +1,5 @@
+Kivy~=2.0.0
+kvdroid~=0.2.5
+kivymd~=0.104.2
+libs~=0.0.10
+kivmob~=2.0
