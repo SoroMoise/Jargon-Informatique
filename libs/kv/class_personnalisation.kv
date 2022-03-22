@@ -1,0 +1,167 @@
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+##:import afficher_definition libs.py.ecran_principal.MainScreen. afficher_definition
+#:import ScrollEffect kivy.effects.scroll.ScrollEffect
+<APropos>
+	orientation: "vertical"
+	size_hint_y:None
+	height: app.height_sreen * 0.6
+	#width: app.width_sreen * 0.9
+	padding: [0, 0, 0, 0]
+	MDBoxLayout:  # Tout le contenu
+		orientation: "vertical"
+		spacing: "10dp"
+		MDBoxLayout:  # Presentation
+			orientation: "vertical"
+			#md_bg_color: get_color_from_hex("#ff0000")
+			size_hint: 1, 0.3
+			MDBoxLayout:  # Nom de l'auteur
+				orientation: "horizontal"
+				padding: [0, 0, 0, 0]
+				size_hint_y: 1
+				#md_bg_color: get_color_from_hex("#ffff00")
+				#height: 25
+
+				MDLabel:
+					text: "Auteur : Soro Colotcholoman Moïse"
+					font_style: root.my_font_style
+					bold: True
+					halign: "center"
+			MDBoxLayout:  # Email
+				orientation: "horizontal"
+				padding: [0, 0, 0, 0]
+				size_hint_y: 1
+				#md_bg_color: get_color_from_hex("#ffff00")
+				#height: 25
+				MDLabel:
+					text: "Email : [color=3333aa][u]soromoise4@gmail.com[/u][/color]"
+					bold: True
+					font_style: root.my_font_style
+					halign: "center"
+					markup: True
+			MDBoxLayout:  # URL
+				orientation: "horizontal"
+				padding: [0, 0, 0, 0]
+				size_hint_y: 1
+				#md_bg_color: get_color_from_hex("#ffff00")
+				#height: 25
+				MDLabel:
+					id: letexte
+					font_style: root.my_font_style
+					halign: "center"
+					text: "URL : Non disponible"
+		MDBoxLayout:
+			#md_bg_color: get_color_from_hex("#ffffff")
+			ScrollView:
+				do_scroll_x: False
+				do_scroll_y: True
+				effect_cls: app.effet
+				bar_width: 5
+				bar_margin: 4
+				MDLabel:
+					height: self.texture_size[1]
+					size_hint_y: None
+					halign: 'justify'
+					font_style: root.my_font_style
+					#text_size: self.width, None
+					text: root.a_propos
+					markup: True
+
+
+<ContentNavigationDrawer>:
+    MDBoxLayout:
+    	id: contenu_navigation
+        orientation: 'vertical'
+        #spacing: dp(10)
+        padding: dp(10)
+        md_bg_color: get_color_from_hex("#ffffff")
+        MDBoxLayout:  # bare de recherche
+            size_hint_y: None
+            height: "50dp"
+            padding: "2dp"
+            orientation: "horizontal"
+	        #md_bg_color: get_color_from_hex("#fff000")
+			MDTextField:
+				id: search_field
+				#icon_right: "arrow-down-drop-circle-outline"
+				hint_text: 'Entrez le mot à rechercher'
+				#mode: "fill"
+				#font_size: 20
+				size_hint: 1, None
+				height: "40dp"
+				active_line: True  # Permet de voire la ligne qui souigne le texte saisie
+				on_text:
+					root.voir_list_mots(self.text, True)
+				on_focus:
+					root.voir_list_mots(button_recherche = True)
+				on_text_validate:
+					print(self.text)
+			MDIconButton:
+				id: id_vider_champ_saisie
+				icon: "magnify" if search_field.text == "" else "close"
+				_no_ripple_effect: True
+				ripple_color: app.ripple_color
+				#user_font_size: "35dp"
+				#theme_text_color: "Custom"
+				#text_color: [1, 1, 1, 1]
+				on_release:
+					search_field.text = ""
+					search_field.focus = True
+		MDBoxLayout:
+			RecycleView:
+				id: rv
+				key_viewclass: 'viewclass'
+				key_size: 'height'
+				#padding: [0, 100, 0, 10]
+				do_scroll_x: False
+				do_scroll_y: True
+				effect_cls: app.effet
+				bar_margin: 1
+				bar_width: 5
+				bar_radius: [20, 20, 20, 20]
+				bar_color: get_color_from_hex("#70a0f0")
+				bar_inactive_color: get_color_from_hex("#93c0ff")
+				scroll_type: ['content', 'bars']
+				on_scroll_move:
+					pass#print(self.parent)
+
+				RecycleBoxLayout:
+					#padding: dp(10)
+					default_size: None, dp(48)
+					default_size_hint: 1, None
+					size_hint_y: None
+					height: self.minimum_height
+					orientation: 'vertical'
+
+
+<CustomOneLineListItem>:
+	id: customoneline
+	text: root.text
+	ripple_color: app.ripple_color
+	on_press:
+		#print(self.text)
+		root.parent.parent.parent.parent.parent.parent.parent.parent.afficher_definition(idmot = self.text.lower(), faire_requete=True)
+
+
+<CustomOneLineRightIconListItem>:  # L'élément mot acec la croix se trouvent à l'interieur de la liste des element
+    size_hint_y: None
+    height: content.height
+    anchor: "right"
+    type_swipe: "auto"
+
+	OneLineRightIconListItem:
+		id: content
+		text: root.text
+		_no_ripple_effect: True
+
+		on_release:
+			root.parent.parent.parent.parent.parent.parent.parent.get_screen("liste_elements").retour()
+			app.changer_ecran("main_screen", "right")
+			root.parent.parent.parent.parent.parent.parent.parent.get_screen("main_screen").afficher_definition(idmot = self.text.lower(), faire_requete=True)
+		IconRightWidget:
+			icon: "close"
+			color: [1, 0, 0, 0.2]
+			theme_text_color: "Custom"
+			ripple_color: app.ripple_color
+			on_release:
+				root.parent.parent.parent.parent.parent.parent.suprimer(root.text)
+				#root.parent.remove_widget(root)

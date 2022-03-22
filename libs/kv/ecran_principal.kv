@@ -1,0 +1,164 @@
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+
+<MainScreen>
+	MDNavigationLayout:
+		ScreenManager:
+			id: sm
+			Screen:
+				MDBoxLayout:
+					orientation: "vertical"
+					MDToolbar:
+						id: toolbar
+						title: "Jargon Informatique"
+						#anchor_title: "center"
+						#md_bg_color: get_color_from_hex("#7aa6ff")
+						left_action_items: [["magnify", lambda x: [root.recherche(), root.focus()]]]
+						right_action_items: [["dots-vertical", lambda x: app.affiche_menu(x)]]
+
+					MDBoxLayout:  # Toute la page saufe la Toolbar
+						orientation: "vertical"
+						md_bg_color: get_color_from_hex("#f5f5f5")
+						id: le_contenu
+						MDBoxLayout:  # Le mot à definir
+							md_bg_color: get_color_from_hex("#70a0f0")
+							size_hint: 1, None #0.08
+							height: id_kv_mot.height + 10
+							padding: [30, 5, 5, 5]
+							MDLabel:  # Le mot a definir
+								id: id_kv_mot
+								text: ""
+								#font_size: 18
+								height: self.texture_size[1]+10
+								font_style: "H5"
+								color: get_color_from_hex("#ffffff")
+								#bold: True
+						MDBoxLayout:  # Le contenue du scroll
+							padding: [1, 10]
+							ScrollView:
+								do_scroll_x: False
+								#effect_cls: app.effet
+								do_scroll_y: True
+								padding: [12, 40]
+								bar_width: 5
+								bar_margin: 1
+								bar_color: get_color_from_hex("#70a0f0")
+								bar_inactive_color: get_color_from_hex("#adc9ff")
+								scroll_type: ['bars', 'content']
+								MDBoxLayout:
+									orientation: "vertical"
+									size_hint: 1, None
+									height: id_kv_definition.height + id_kv_type.height + 80
+									#md_bg_color: get_color_from_hex("#ffffff")
+									padding: [0, 0, 0, 30]
+									MDBoxLayout:
+										#radius: [45, 45, 45, 45]
+										padding: [10, 20, 10, 20]
+										#md_bg_color: get_color_from_hex("#00fcfc")
+										size_hint: 1, None
+										opacity: 0.6
+										height: id_kv_type.height
+										MDLabel:  # La definition du mot
+											id: id_kv_type
+											markup: True
+											#size_hint_y: None
+											#bold: True
+											padding: [15, 5]
+											height: self.texture_size[1]
+											#text_size: self.width, None
+											#md_bg_color: get_color_from_hex("#ffffff")
+											text: ""
+											font_style: "H5"
+											halign: 'justify'
+									MDBoxLayout:
+										radius: [45, 45, 45, 45]
+										padding: [10, 20, 10, 20]
+										md_bg_color: get_color_from_hex("#ffffff")
+										size_hint: 1, None
+										opacity: 0.6
+										height: id_kv_definition.height + 40
+										MDLabel:  # La definition du mot
+											id: id_kv_definition
+											markup: True
+											#size_hint_y: None
+											#bold: True
+											padding: [15, 5]
+											height: self.texture_size[1]
+											#text_size: self.width, None
+											#md_bg_color: get_color_from_hex("#ffffff")
+											text: str(root.definition)
+											font_style: "H5"
+											halign: 'justify'
+						MDBoxLayout:  # La bare d'en bas
+							radius: [40, 40, 0, 0]
+							#elevation: 30
+							md_bg_color: get_color_from_hex("#70a0f0")
+							padding: [self.width*0.04, 0, self.width*0.04, 0]
+							size_hint: 1, 0.07
+							MDBoxLayout:  # precedent
+								padding: [self.width*0.5-self.children[0].width/2, 0, 0, self.height*0.5-self.children[0].height/2]
+								MDIconButton:
+									id: chevron_left
+									icon: "chevron-left"
+									user_font_size: "35sp"
+									theme_text_color: "Custom"
+									ripple_color: app.ripple_color
+									text_color: [1, 1, 1, 1]
+									on_press:
+										root.mot_precedent()
+										#print(self.width)
+							MDBoxLayout:  # J'aime
+								padding: [self.width*0.5-self.children[0].width/2, 0, 0, self.height*0.5-self.children[0].height/2]
+								MDIconButton:
+									id: button_aimer
+									icon: "heart"
+									user_font_size: "35sp"
+									theme_text_color: "Custom"
+									text_color: get_color_from_hex("#ffffff")
+									ripple_color: app.ripple_color
+									on_press:
+										root.aimer(True)
+							MDBoxLayout:  # Aleatoir
+								padding: [self.width*0.5-self.children[0].width/2, 0, 0, self.height*0.5-self.children[0].height/2]
+								MDIconButton:
+									icon: "shuffle-variant"
+									user_font_size: "35sp"
+									theme_text_color: "Custom"
+									text_color: [1, 1, 1, 1]
+									ripple_color: app.ripple_color
+									on_press:
+										root.recherche_aleatoir()
+							MDBoxLayout:  # Suivant
+								padding: [self.width*0.5-self.children[0].width/2, 0, 0, self.height*0.5-self.children[0].height/2]
+								#width: 50
+								MDIconButton:
+									icon: "chevron-right"
+									user_font_size: "35dp"
+									theme_text_color: "Custom"
+									text_color: [1, 1, 1, 1]
+									ripple_color: app.ripple_color
+									on_press:
+										root.mot_suivant()
+										#app.af()
+
+		MDNavigationDrawer:
+			id: nav_drawer
+			#radius: [10, 80, 80, 10]
+			#type: "modal"
+			type: "standard"  # Pourais permetre de changer la façon dont la MDNavigationDrawer s'ouvre
+			#md_bg_color: get_color_from_hex("#0ff00f")
+			enable_swiping: True
+			#scrim_color: [0, 1, 1, 1]
+			swipe_edge_width: "100dp"  # la taille de l'espace dans laquelle la navigation sort quant on glisse le doigt
+			#swipe_distance: 4  # la distance que doit parcourire le doigt avant que la Navigation commence à sortire
+			elevation:0
+			close_on_click: True
+#			on_touch_move:
+#				print("touch move")
+#				print(root.swipe)
+#				root.swipe: False
+#				print(self.enable_swiping)
+#				self.enable_swiping=False if self.status == "opened" else True
+
+			ContentNavigationDrawer:
+				screen_manager: sm
+				#nav_drawer: "root.parent"
