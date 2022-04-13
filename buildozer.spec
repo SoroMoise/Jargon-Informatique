@@ -52,7 +52,7 @@ presplash.filename = %(source.dir)s/src/images/logo.ico
 icon.filename = %(source.dir)s/src/images/logo.ico
 
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
-orientation = all
+orientation = portrait
 
 # (list) List of service to declare
 #services = NAME:ENTRYPOINT_TO_PY,NAME2:ENTRYPOINT2_TO_PY
@@ -104,7 +104,7 @@ android.ndk = 19b
 # (bool) If True, then skip trying to update the Android sdk
 # This can be useful to avoid excess Internet downloads or save time
 # when an update is due and you just want to test/build your package
-android.skip_update = True
+android.skip_update = False
 
 # (bool) If True, then automatically accept SDK license
 # agreements. This is intended for automation only. If set to False,
@@ -162,12 +162,6 @@ android.skip_update = True
 # e.g. android.add_packaging_options = "exclude 'META-INF/common.kotlin_module'", "exclude 'META-INF/*.kotlin_module'"
 #android.add_gradle_repositories =
 
-# (list) Java classes to add as activities to the manifest.
-#android.add_activities = com.example.ExampleActivity
-
-# (str) OUYA Console category. Should be one of GAME or APP
-# If you leave this blank, OUYA support will not be enabled
-#android.ouya.category = GAME
 
 # (str) Filename of OUYA Console icon. It must be a 732x412 png image.
 #android.ouya.icon.filename = %(source.dir)s/data/ouya_icon.png
@@ -177,17 +171,6 @@ android.skip_update = True
 
 # (str) launchMode to set for the main activity
 #android.manifest.launch_mode = standard
-
-# (list) Android additional libraries to copy into libs/armeabi
-#android.add_libs_armeabi = libs/android/*.so
-#android.add_libs_armeabi_v7a = libs/android-v7/*.so
-#android.add_libs_arm64_v8a = libs/android-v8/*.so
-#android.add_libs_x86 = libs/android-x86/*.so
-#android.add_libs_mips = libs/android-mips/*.so
-
-# (bool) Indicate whether the screen should stay on
-# Don't forget to add the WAKE_LOCK permission if you set this to True
-#android.wakelock = False
 
 # (list) Android application meta-data to set (key=value format)
 #android.meta_data =
@@ -225,17 +208,6 @@ android.arch = armeabi-v7a
 # (str) python-for-android git clone directory (if empty, it will be automatically cloned from github)
 p4a.source_dir = /mnt/501334001D7C1E95/Document/PycharmProjects/p4a/python-for-android-develop
 
-# (str) The directory in which python-for-android should look for your own build recipes (if any)
-#p4a.local_recipes =
-
-# (str) Filename to the hook for p4a
-#p4a.hook =
-
-# (str) Bootstrap to use for android builds
-# p4a.bootstrap = sdl2
-
-# (int) port number to specify an explicit --port= p4a argument (eg for bootstrap flask)
-#p4a.port =
 
 
 [buildozer]

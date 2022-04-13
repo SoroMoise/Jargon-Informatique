@@ -2,21 +2,30 @@ from random import choice
 from string import ascii_lowercase, digits
 
 # from kivymd.uix.navigationdrawer import MDNavigationDrawer
+from kivymd.uix.card import MDSeparator
 
 from libs.py.interaction_bd import interroger_bd
 # from kivy.utils import escape_markup
 
-from kivy.properties import StringProperty
+from kivy.properties import StringProperty, NumericProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
+from kivy.core.window import Window
 # from kivymd.uix.card import MDCardSwipe
 from kivymd.uix.list import OneLineListItem  # , OneLineRightIconListItem
 
 definitions = {}
 
 
+class MySep(MDSeparator):
+	pass
+
+
 class APropos(BoxLayout):
 	my_font_style = "H6"
+	
+	width_sreen = Window.width
+	height_sreen = Window.height
 
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)

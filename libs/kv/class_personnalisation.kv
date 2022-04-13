@@ -1,26 +1,40 @@
 #:import get_color_from_hex kivy.utils.get_color_from_hex
 ##:import afficher_definition libs.py.ecran_principal.MainScreen. afficher_definition
 #:import ScrollEffect kivy.effects.scroll.ScrollEffect
+#:import M_CardIconButton libs.module.m_cardiconbutton
+
+<MySep>:
+	size_hint: 0.6, None
+	color: [0, 0, 0, .6] if app.theme_cls.theme_style == "Light" else [1, 1, 1, 1]
+	width: 10
+	#padding: [50, 50, 50, 50]
+
 <APropos>
 	orientation: "vertical"
 	size_hint_y:None
-	height: app.height_sreen * 0.6
+	height: root.height_sreen * 0.7
 	#width: app.width_sreen * 0.9
+	spacing: "5dp"
 	padding: [0, 0, 0, 0]
 	MDBoxLayout:  # Tout le contenu
 		orientation: "vertical"
-		spacing: "10dp"
+		#spacing: "10dp"
+
+		MDSeparator:
+			size_hint: 0.6, None
+			color: [0, 0, 0, .6] if app.theme_cls.theme_style == "Light" else [1, 1, 1, 1]
+			width: 10
+			pos_hint: {"center_x": .5, "center_y": .5}
+
 		MDBoxLayout:  # Presentation
 			orientation: "vertical"
 			#md_bg_color: get_color_from_hex("#ff0000")
-			size_hint: 1, 0.3
+			size_hint: 1, 0.2
 			MDBoxLayout:  # Nom de l'auteur
 				orientation: "horizontal"
 				padding: [0, 0, 0, 0]
 				size_hint_y: 1
 				#md_bg_color: get_color_from_hex("#ffff00")
-				#height: 25
-
 				MDLabel:
 					text: "Auteur : Soro Colotcholoman Moïse"
 					font_style: root.my_font_style
@@ -49,14 +63,22 @@
 					font_style: root.my_font_style
 					halign: "center"
 					text: "URL : Non disponible"
+
+		MySep:
+
 		MDBoxLayout:
+			id: content_scroll
 			#md_bg_color: get_color_from_hex("#ffffff")
+			padding: 0, "5dp", 0, 0
 			ScrollView:
 				do_scroll_x: False
 				do_scroll_y: True
 				effect_cls: app.effet
 				bar_width: 5
-				bar_margin: 4
+				bar_margin: 2
+				#bar_radius: [50, 50, 50, 50]
+				bar_color: app.theme_cls.primary_dark
+				bar_inactive_color: app.theme_cls.primary_light
 				MDLabel:
 					height: self.texture_size[1]
 					size_hint_y: None
@@ -65,21 +87,39 @@
 					#text_size: self.width, None
 					text: root.a_propos
 					markup: True
+	MySep:
 
+
+	MDCard:
+		size_hint: None, None
+		width: root.width-15
+		height: "35dp"
+		pos_hint: {"center_x": .5, "center_y": .5}
+		md_bg_color: [1, 1, 1, 1] if app.theme_cls.theme_style == "Light" else print()
+		ripple_behavior: True
+		elevation: 10
+		radius: ["15dp"]
+		on_release: root.parent.parent.parent.dismiss()
+		MDLabel:
+			text: "Fermer"
+			bold: True
+			halign: "center"
+			
 
 <ContentNavigationDrawer>:
-    MDBoxLayout:
-    	id: contenu_navigation
-        orientation: 'vertical'
-        #spacing: dp(10)
-        padding: dp(10)
-        md_bg_color: get_color_from_hex("#ffffff")
-        MDBoxLayout:  # bare de recherche
-            size_hint_y: None
-            height: "50dp"
-            padding: "2dp"
-            orientation: "horizontal"
-	        #md_bg_color: get_color_from_hex("#fff000")
+	MDBoxLayout:
+		id: contenu_navigation
+		orientation: 'vertical'
+		#spacing: dp(10)
+		padding: dp(10)
+		radius: [0, 40, 40, 0]
+
+		MDBoxLayout:  # bare de recherche
+			size_hint_y: None
+			height: "50dp"
+			padding: "2dp"
+			orientation: "horizontal"
+			#md_bg_color: get_color_from_hex("#fff000")
 			MDTextField:
 				id: search_field
 				#icon_right: "arrow-down-drop-circle-outline"
@@ -118,8 +158,8 @@
 				bar_margin: 1
 				bar_width: 5
 				bar_radius: [20, 20, 20, 20]
-				bar_color: get_color_from_hex("#70a0f0")
-				bar_inactive_color: get_color_from_hex("#93c0ff")
+				bar_color: app.theme_cls.primary_dark
+				bar_inactive_color: app.theme_cls.primary_light
 				scroll_type: ['content', 'bars']
 				on_scroll_move:
 					pass#print(self.parent)
@@ -143,10 +183,10 @@
 
 
 <CustomOneLineRightIconListItem>:  # L'élément mot acec la croix se trouvent à l'interieur de la liste des element
-    size_hint_y: None
-    height: content.height
-    anchor: "right"
-    type_swipe: "auto"
+	size_hint_y: None
+	height: content.height
+	anchor: "right"
+	type_swipe: "auto"
 
 	OneLineRightIconListItem:
 		id: content
@@ -159,8 +199,8 @@
 			root.parent.parent.parent.parent.parent.parent.parent.get_screen("main_screen").afficher_definition(idmot = self.text.lower(), faire_requete=True)
 		IconRightWidget:
 			icon: "close"
-			color: [1, 0, 0, 0.2]
-			theme_text_color: "Custom"
+			#color: [1, 0, 0, 0.2]
+			#theme_text_color: "Custom"
 			ripple_color: app.ripple_color
 			on_release:
 				root.parent.parent.parent.parent.parent.parent.suprimer(root.text)

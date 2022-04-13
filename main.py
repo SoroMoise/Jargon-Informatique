@@ -3,6 +3,7 @@
 
 
 # bibliothèque propre au language python
+import time
 from sys import exit
 
 from kivy.core.window import Window
@@ -17,6 +18,8 @@ from kivy.utils import platform
 # bibliothèque kivymd
 from kivymd.app import MDApp
 from kivymd.uix.button import MDIconButton
+from kivymd.uix.navigationdrawer import MDNavigationDrawer
+
 from kivymd.uix.menu import MDDropdownMenu
 
 # bibliothèque kivy
@@ -27,18 +30,19 @@ from kivymd.uix.menu import MDDropdownMenu
 # Permet d'importer le bon toast en fonction du OS
 from kivymd.uix.textfield import MDTextFieldRect
 
-try:
+"""try:
 	print("je fait le try")
 	# from kivmob import KivMob, TestIds
 	from kvdroid import toast  # toast pour android fait en java
 except Exception as e:
 	print("l'erreur est : ", e)
-	from kivymd.toast import toast  # toast pour desktop fait avec kivymd'''
+	from kivymd.toast import toast  # toast pour desktop fait avec kivymd'''"""
+from kivymd.toast import toast
 
 from libs.py.ecran_principal import MainScreen
 from libs.py.liste_elements import ListeElements
 
-# from kivymd.uix.button import MDIconButton
+from kivymd.uix.button import MDIconButton
 
 # from kivy.uix.scrollview import ScrollView
 # from kivy.uix.textinput import TextInput
@@ -50,6 +54,7 @@ from libs.py.liste_elements import ListeElements
 # from kivymd.uix.dialog import MDDialog
 # from kivymd.uix.filemanager import MDFileManager
 # from kivymd.uix.card import MDCard, MDSeparator
+from kivymd.theming import ThemeManager, ThemableBehavior
 
 TODO: "Faire en sorte qu'il y ait un retour à la ligne après chaque sens, car un mot peut en avoir plusieur"
 TODO: "Faire en sorte qu'un message soit afficher si aucun mot n'est trouver"
@@ -62,34 +67,47 @@ class MainApp(MDApp, BoxLayout):
 	menu_dictionnaire = None
 	width_sreen = Window.width
 	height_sreen = Window.height
+	theme_style = None
+	# theme_cls.theme_style = "Light"
 	screen_manager = ScreenManager()
-
+	
 	# ads = KivMob(TestIds.APP)  # C'est ici que serras notre id de pub
-
+	
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
 		# self.menu_items = None
 		# self.menu_dictionnaire = None
 		# self.screen_manager = ScreenManager()
-		self.ripple_color = [0, 0, 1, .1]
+		self.ripple_color = self.theme_cls.primary_dark
 		self.effet = ScrollEffect  # l'effet de croll
 		Window.bind(on_keyboard=self.on_key_press)
-
-
+		Window.bind(on_mouse_down=self.on_mouse)
+	
 	def build(self):
+		
+		self.theme_cls.primary_palette = "DeepPurple"  # Blue, Indigo(bleu foncer), LightBlue, Purple (violet)
+		# ['Red', 'Pink', 'Purple', 'DeepPurple', 'Indigo', 'Blue', 'LightBlue', 'Cyan', '', '', '', 'Lime', 'Yellow', 'Amber', 'Orange', 'DeepOrange', 'Brown', 'Gray', 'BlueGray']
+		self.theme_cls.primary_hue = "500"
+		self.theme_cls.theme_style = "Light"
+		
 		Builder.load_file("libs/kv/ecran_principal.kv")
 		Builder.load_file("libs/kv/class_personnalisation.kv")
 		Builder.load_file("libs/kv/liste_elements.kv")
 		# Builder.load_file("libs/kv/ecran_demarrage.kv")
 		MainApp.screen_manager.add_widget(MainScreen(name="main_screen"))
 		MainApp.screen_manager.add_widget(ListeElements(name="liste_elements"))
-
+		
 		# self.ads.new_banner(TestIds.BANNER, False)
 		# self.ads.show_banner()
-
+		
 		return MainApp.screen_manager
-
+	
+	def on_mouse(self, *args):
+		print("capture")
+		Window.screenshot("/home/soro/soro.png")
+	
 	def on_key_press(self, window, key, *args):
+		
 		if key == 27 and MainApp.screen_manager.current == "liste_elements":
 			self.root_window.children[0].children[0].retour()
 			self.changer_ecran(direction="right")
@@ -99,66 +117,79 @@ class MainApp(MDApp, BoxLayout):
 		if key == 276:  # mot precedent
 			MainScreen.mot_precedent()
 		return False
-
+	
 	def on_start(self):
 		pass
-
+	
 	def on_stop(self):
 		print("je suis on stop")
-
+	
 	def on_pause(self):
 		print("je fait on pause")
 		return True
-
+	
 	def on_resume(self):
 		print("on resume")
-
-	@classmethod
-	def affiche_menu(cls, button):
-		if not cls.menu:
-			cls.menu_dictionnaire = {"info": "A propos", "aide": "Aide", "historique": "Historique des recherches",
-			                          "aimer": "Liste des favoris", "quiter": "Quiter"}
-			cls.menu_items = [
+	
+	def affiche_menu(self, button):
+		deb = time.time()
+		print(deb)
+		if not MainApp.menu:
+			MainApp.menu_dictionnaire = {"info": "A propos", "aide": "Aide", "historique": "Historique des recherches",
+			                             "aimer": "Liste des favoris", "mode claire/sombre": "Mode claire/sombre",
+			                             "quiter": "Quiter"}
+			MainApp.menu_items = [
 				{
 					"viewclass": "OneLineListItem",
-					"text": f"{cls.menu_dictionnaire[i]}",
+					"text": f"{MainApp.menu_dictionnaire[i]}",
 					"height": dp(45),
 					"halign": "center",
-					"on_release": lambda x=f"{i}": cls.clic_menu(x),
-				} for i in cls.menu_dictionnaire
+					"on_release": lambda x=f"{i}": self.clic_menu(x),
+				} for i in MainApp.menu_dictionnaire
 				# Ajouter des icons par la suite
 			]
-			cls.menu = MDDropdownMenu(
-				items=cls.menu_items,
+			MainApp.menu = MDDropdownMenu(
+				items=MainApp.menu_items,
 				width_mult=4,
+				opening_time=0.1,
 			)
-			cls.menu.caller = button
-		cls.menu.open()
-
-	@classmethod
-	def clic_menu(cls, text_item: str):  # Executer qand on clique sur un element du menu
-
-		cls.menu.dismiss()  # Permet de fermer le menu
-
+			MainApp.menu.caller = button
+		MainApp.menu.open()
+	
+	def clic_menu(self, text_item: str):  # Executer qand on clique sur un element du menu
+		
+		MainApp.menu.dismiss()  # Permet de fermer le menu
+		
 		if text_item == "aide":
 			toast("Désoler, la documentation n'as pas encore été ecrite, faite regulièrement vos mise a jour car elle "
 			      "serat bientôt disponible")
 		# Timer(interval=4.5, function=toast,args=["faite regulièrement vos mise a jour car elle serat bientôt
 		# disponible"]).start()
-
-		elif text_item in {"historique", "aimer"}:
-			ListeElements.titre = cls.menu_dictionnaire[text_item]
-			cls.changer_ecran("liste_elements")
-
+		
+		elif text_item == "historique":#in {"historique", "aimer"}:
+			ListeElements.titre = "Historique des recherches"# MainApp.menu_dictionnaire[text_item]
+			ListeElements.is_historique = True
+			MainApp.changer_ecran("liste_elements")
+		elif text_item == "aimer":
+			ListeElements.titre = "Liste des favoris"
+			ListeElements.is_historique = False
+			MainApp.changer_ecran("liste_elements")
+		
 		elif text_item == "info":
 			MainScreen.a_propos()
-
+		
 		elif text_item == "quiter":
 			exit()
-
+		
 		elif text_item == "capture":
 			MainScreen.capture_ecran()
-
+		
+		elif text_item == "mode claire/sombre":
+			if self.theme_cls.theme_style == "Light":
+				self.theme_cls.theme_style = "Dark"
+			else:
+				self.theme_cls.theme_style = "Light"
+	
 	@classmethod
 	def changer_ecran(cls, nom_ecran: str = "main_screen", direction: str = "left"):
 		"""

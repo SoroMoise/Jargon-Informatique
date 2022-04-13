@@ -9,14 +9,14 @@ from kivymd.uix.dialog import MDDialog
 
 from libs.py.class_personnalisation import APropos
 from libs.py.interaction_bd import ajouter_mot, purge, mot_aleatoir, interroger_bd, suppreime_mot
-try:
+"""try:
 	print("je fait le try")
 	# from kivmob import KivMob, TestIds
 	from kvdroid import toast  # toast pour android fait en java
 except Exception as e:
 	print("l'erreur est : ", e)
-	from kivymd.toast import toast  # toast pour desktop fait avec kivymd'''
-
+	from kivymd.toast import toast  # toast pour desktop fait avec kivymd'''"""
+from kivymd.toast import toast
 
 class MainScreen(Screen, BoxLayout):
 	"""
@@ -44,7 +44,10 @@ class MainScreen(Screen, BoxLayout):
 		Window.bind(on_mouse_down=self.on_mouse)
 
 	def on_mouse(self, obj, x, y, clic, *args):
+		#print("je fait on mouse", args)
+		print(f"x = {x}, taille = {self.ids.nav_drawer.width}")
 		if self.ids.nav_drawer.status == "opened" and x <= self.ids.nav_drawer.width:
+			#print(f"x = {x}, open = {self.ids.nav_drawer.status}")
 			self.ids.nav_drawer.enable_swiping = False
 		else:
 			self.ids.nav_drawer.enable_swiping = True
@@ -215,15 +218,18 @@ class MainScreen(Screen, BoxLayout):
 		if not cls.dialog_a_propos:
 			cls.dialog_a_propos = MDDialog(
 				title="A propos",
-				opacity=0.7,
+				opacity=1,
 				# width_offset=30,
 				type="custom",
 				padding=[0, 0, 0, 0],
 				radius=[45, 45, 45, 45],
 				content_cls=APropos(),
 			)
-			cls.dialog_a_propos.width = cls.width_sreen * 0.9
-			print(cls.dialog_a_propos)
-			cls.dialog_a_propos.ids.title.font_style = "H4"
+
+			#cls.dialog_a_propos.width = cls.width_sreen * 0.9
+			cls.dialog_a_propos.ids.title.font_style = "H5"
+			#cls.dialog_a_propos.ids.title.md_bg_color = [1, 0, 0, 0.5]
 			cls.dialog_a_propos.ids.title.halign = "center"
+			cls.dialog_a_propos.ids.container.padding = ["10dp", "10dp", "0dp", "10dp"]
+		cls.dialog_a_propos.width = cls.width_sreen * 0.9
 		cls.dialog_a_propos.open()

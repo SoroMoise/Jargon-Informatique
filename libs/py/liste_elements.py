@@ -22,9 +22,10 @@ from libs.py.interaction_bd import interroger_bd, suppreime_mot
 class ListeElements(Screen, BoxLayout):
 	nbr = 0
 	titre = ""
+
 	dialog = None
 	element: list = []
-	is_historique = True
+	is_historique = None
 
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
@@ -33,14 +34,13 @@ class ListeElements(Screen, BoxLayout):
 
 		self.ids.toolbar.title = ListeElements.titre
 		self.ids.id_liste_element.data = []
-		if ListeElements.titre == "Historique des recherches":
-			ListeElements.element = interroger_bd("mot", "historique, dictionnaire",
-			                                      "where historique.id_mot = dictionnaire.idmot")
+		if ListeElements.is_historique:
+			ListeElements.element = interroger_bd("mot", "historique, dictionnaire", "where historique.id_mot = dictionnaire.idmot")
+			#ListeElements.is_historique = True
 
-		elif ListeElements.titre == "Liste des favoris":
-			ListeElements.is_historique = False
-			ListeElements.element = interroger_bd("mot", "aimer, dictionnaire",
-			                                      "where aimer.id_mot = dictionnaire.idmot")
+		else:
+			#ListeElements.is_historique = False
+			ListeElements.element = interroger_bd("mot", "aimer, dictionnaire", "where aimer.id_mot = dictionnaire.idmot")
 
 		if not ListeElements.element:
 			self.ecran_est_vide()
@@ -167,3 +167,7 @@ class ListeElements(Screen, BoxLayout):
 	@classmethod
 	def fermer_dialog(cls, obj="") -> None:
 		cls.dialog.dismiss()  # fermer la MDDialog
+		
+"""sudo apt-get install zlib1g-dev libsqlite3-dev tk-dev
+sudo apt-get install libssl-dev openssl
+sudo apt-get install libffi-dev"""

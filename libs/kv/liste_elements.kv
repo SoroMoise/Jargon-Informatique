@@ -7,7 +7,7 @@
 		MDToolbar:
 			id: toolbar
 			title: root.titre
-			md_bg_color: get_color_from_hex("#7aa6ff")
+			#md_bg_color: get_color_from_hex("#7aa6ff")
 			left_action_items: [["chevron-left", lambda x: [app.changer_ecran("main_screen", "right"), root.retour()]]]
 			right_action_items: [["delete-outline", lambda x: [root.dialog_tout_supprimer()]]]
 
@@ -35,8 +35,8 @@
 					effect_cls: app.effet
 					bar_margin: 1
 					bar_width: 5
-					bar_border_radius: [20, 20, 20, 20]
-					bar_color: get_color_from_hex("#70a0f0")
+                    bar_color: app.theme_cls.primary_dark
+                    bar_inactive_color: app.theme_cls.primary_light
 					bar_inactive_color: get_color_from_hex("#93c0ff")
 					scroll_type: ['content', 'bars']
 
