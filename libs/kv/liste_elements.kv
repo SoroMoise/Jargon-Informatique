@@ -1,27 +1,48 @@
 #:import get_color_from_hex kivy.utils.get_color_from_hex
-#:import toast kivymd.toast.toast
 
 <ListeElements>
+	id: liste_element
 	MDBoxLayout:
 		orientation: "vertical"
 		MDToolbar:
 			id: toolbar
 			title: root.titre
-			md_bg_color: get_color_from_hex("#7aa6ff")
+			#md_bg_color: get_color_from_hex("#7aa6ff")
 			left_action_items: [["chevron-left", lambda x: [app.changer_ecran("main_screen", "right"), root.retour()]]]
 			right_action_items: [["delete-outline", lambda x: [root.dialog_tout_supprimer()]]]
 
-		MDBoxLayout:
+		MDBoxLayout:  # contenu en bas de la Toolbar
+			id: id_contenu
 			orientation: "vertical"
-			padding: [10, 15, 10, 10]
-			id: le_contenu
-			ScrollView:
-				do_scroll_x: False
-				do_scroll_y: True
-				padding: [12, 40]
-				bar_width: 5
-				bar_margin: 5
-				MDList:
-					size_hint: 1, None
-					height: 25
+			padding: [0, 10, 0, 10]
+			MDBoxLayout:
+				orientation: "vertical"
+				id: id_ecran_vid
+				size_hint: 1, 0
+			MDBoxLayout:
+				orientation: "vertical"
+				id: id_contenu_rv
+
+				#size_hint: 1, .5
+				RecycleView:
 					id: id_liste_element
+					key_viewclass: 'viewclass'
+					key_size: 'height'
+					size_hint: 1, .5
+					md_bg_color: get_color_from_hex("#fff000")
+					do_scroll_x: False
+					do_scroll_y: True
+					#effect_cls: app.effet
+					bar_margin: 1
+					bar_width: app.my_bar_width
+					bar_color: app.theme_cls.primary_dark
+					bar_inactive_color: app.theme_cls.primary_light
+					scroll_type: ['content', 'bars']
+
+					RecycleBoxLayout:
+						#padding: dp(10)
+						default_size: None, dp(48)
+						default_size_hint: 1, None
+						size_hint_y: None
+						height: self.minimum_height
+						orientation: 'vertical'

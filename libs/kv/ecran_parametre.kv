@@ -1,0 +1,283 @@
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+#:import colors kivymd.color_definitions.colors
+#:import list_theme libs.module.variable.list_theme
+#:import screen_manager libs.py.screenmanager.screen_manager
+
+<MonButtonTheme>:
+	id: btn_theme
+	size_hint: .5, None
+	adaptive_height: False
+	padding: [1,  2]
+	radius: ["15dp", ]
+	on_release:
+		app.theme_cls.primary_palette = list_theme[text_btn.text]
+		app.changer_couleur_bar_statut(list_theme[text_btn.text])
+	MDLabel:
+		id: text_btn
+		theme_text_color: "Custom"
+		text: root.text
+		user_font_size: "10dp"
+		#outline_width: 1 # met une bordure noir(par defaut) sur le text
+		font_name: app.my_font
+		shorten: True
+		shorten_from: "right"
+		height: self.texture_size[1]+10
+		bold: True
+		text_color: root.text_color
+		halign: "center"
+
+<CardText>:
+	size_hint: 1, None
+	height: "70sp"
+	ripple_behavior: True
+	padding: ["15dp", "5dp"]
+	radius: ["20dp"]
+	elevation: 10# if app.theme_cls.theme_style=="Light" else 0
+	md_bg_color: app.theme_cls.bg_normal if app.theme_cls.theme_style=="Light" else app.theme_cls.divider_color
+#	md_bg_color: app.theme_cls.bg_normal# if app.theme_cls.theme_style == "Light" else app.theme_cls.bg_normal
+	orientation: "vertical"
+	#line_color: [0, 0, 0, 0.4] if app.theme_cls.theme_style == "Light" else [1, 1, 1, 0.4]
+
+
+<EcranParam>
+	apps: app
+	roots: root
+	MDBoxLayout:
+		orientation: "vertical"
+
+		MDBoxLayout:
+			size_hint: 1, None
+			height: toolbar.height
+			MDToolbar:
+			    id: toolbar
+			    title: "Paramètres"
+			    #anchor_title: "center"
+			    md_bg_color: app.theme_cls.primary_color
+			    pos_hint: {"top": 1}
+			    elevation: 5
+			    left_action_items: [["chevron-left", lambda x: app.changer_ecran("main_screen", "right")]]
+
+		MDBoxLayout:
+			orientation: "vertical"
+			padding: "10dp", "2dp", "5dp", "10dp"
+		    ScrollView:
+				do_scroll_x: False
+				#effect_cls: app.effet
+				do_scroll_y: True
+				bar_width: app.my_bar_width
+				bar_margin: "-5sp"
+				smooth_scroll_end: 10
+				bar_color: app.theme_cls.primary_dark
+				bar_inactive_color: app.theme_cls.primary_light
+				scroll_type: ['bars', 'content']
+				MDBoxLayout:
+					orientation: "vertical"
+					size_hint: 1, None
+					#adaptive_height: True
+					height: self.minimum_height
+					padding: [0, "10sp"]
+					spacing: "20dp"
+					#height: couleur.height + texte.height + 500
+					MDBoxLayout:  #Palette de couleur
+						id: couleur
+						orientation: "vertical"
+						size_hint: 1, None
+						height: titre_pal.height+pal_card.height+15
+						spacing: "10dp"
+						MDBoxLayout:  # titre de Palette de couleur
+							id: box_titre_pal
+							orientation: "horizontal"
+							#md_bg_color: [1, 0, 0, 0.3]
+							size_hint: 1, None
+							height: titre_pal.height
+							MDLabel:
+								id: titre_pal
+								text: "Couleurs"
+								#md_bg_color: [0, 1, 0, .5]
+								font_name: app.my_font
+								height: self.texture_size[1]
+								bold: True
+
+						MDGridLayout: # contenu de Palette de couleur
+							cols: 4 if app.theme_cls.device_orientation == "portrait" else 6
+							id: pal_card
+							size_hint: 1, None
+							#height: "200dp"
+							padding: ["20dp", "10dp", "10dp", "0dp"]
+							spacing: "8dp"
+							adaptive_height: True
+							pos_hint: {"center_x": .5, "center_y": .5}
+							#md_bg_color: [1, 1, 1, 1] if app.theme_cls.theme_style == "Light" else get_color_from_hex("#424242")
+							#ripple_behavior: True
+							#elevation: 5 if app.theme_cls.theme_style == "Light" else 0
+							#radius: ["15dp"]
+
+							MonButtonTheme:
+								md_bg_color: get_color_from_hex(colors[list_theme[self.text]][app.theme_cls.primary_hue])
+								text: "Bleu"
+
+							MonButtonTheme:
+								md_bg_color: get_color_from_hex(colors[list_theme[self.text]][app.theme_cls.primary_hue])
+								text: "Bleu clair"
+
+							MonButtonTheme:
+								md_bg_color: get_color_from_hex(colors[list_theme[self.text]][app.theme_cls.primary_hue])
+								text: "Rose"
+
+							MonButtonTheme:
+								md_bg_color: get_color_from_hex(colors[list_theme[self.text]][app.theme_cls.primary_hue])
+								text: "Violet"
+
+							MonButtonTheme:
+								md_bg_color: get_color_from_hex(colors[list_theme[self.text]][app.theme_cls.primary_hue])
+								text: "Violet foncé"
+
+							MonButtonTheme:
+								md_bg_color: get_color_from_hex(colors[list_theme[self.text]][app.theme_cls.primary_hue])
+								text: "Indigo"
+
+							MonButtonTheme:
+								md_bg_color: get_color_from_hex(colors[list_theme[self.text]][app.theme_cls.primary_hue])
+								text: "Rouge"
+
+							MonButtonTheme:
+								md_bg_color: get_color_from_hex(colors[list_theme[self.text]][app.theme_cls.primary_hue])
+								text: "Cyan"
+
+
+							MonButtonTheme:
+								md_bg_color: get_color_from_hex(colors[list_theme[self.text]][app.theme_cls.primary_hue])
+								text: "Teal"
+
+							MonButtonTheme:
+								md_bg_color: get_color_from_hex(colors[list_theme[self.text]][app.theme_cls.primary_hue])
+								text: "Vert"
+
+							MonButtonTheme:
+								md_bg_color: get_color_from_hex(colors[list_theme[self.text]][app.theme_cls.primary_hue])
+								text: "Vert clair"
+
+							MonButtonTheme:
+								md_bg_color: get_color_from_hex(colors[list_theme[self.text]][app.theme_cls.primary_hue])
+								text: "Vert citron"
+
+							MonButtonTheme:
+								md_bg_color: get_color_from_hex(colors[list_theme[self.text]][app.theme_cls.primary_hue])
+								text: "Jaune"
+
+							MonButtonTheme:
+								md_bg_color: get_color_from_hex(colors[list_theme[self.text]][app.theme_cls.primary_hue])
+								text: "Ambre"
+
+							MonButtonTheme:
+								md_bg_color: get_color_from_hex(colors[list_theme[self.text]][app.theme_cls.primary_hue])
+								text: "Orange"
+
+							MonButtonTheme:
+								md_bg_color: get_color_from_hex(colors[list_theme[self.text]][app.theme_cls.primary_hue])
+								text: "Orange foncé"
+
+							MonButtonTheme:
+								md_bg_color: get_color_from_hex(colors[list_theme[self.text]][app.theme_cls.primary_hue])
+								text: "Maron/Brun"
+
+							MonButtonTheme:
+								md_bg_color: get_color_from_hex(colors[list_theme[self.text]][app.theme_cls.primary_hue])
+								text: "Gris"
+
+							MonButtonTheme:
+								md_bg_color: get_color_from_hex(colors[list_theme[self.text]][app.theme_cls.primary_hue])
+								text: "Gris bleu"
+					MDSeparator:
+						height: "3sp"
+						md_bg_color: app.theme_cls.divider_color
+					MDBoxLayout: # texte
+						id: texte
+						orientation: "vertical"
+						spacing: "1sp"
+						size_hint: 1, None
+						#adaptive_height: True
+						height: titre_text.height+police.height+police.height+police.height+100
+						#md_bg_color: [1, 0, 0, 0.5]
+						MDBoxLayout:
+							orientation: "vertical"
+							size_hint:1, None
+							height: titre_text.height
+							MDLabel:
+								id: titre_text
+								text: "Texte"
+								#md_bg_color: [0, 1, 0, .5]
+								font_name: app.my_font
+								height: self.texture_size[1]
+								bold: True
+								font_size: app.my_font_size
+						MDGridLayout:
+							id: grid_all
+							padding: ["20dp", "10dp", "10dp", "0dp"]
+							spacing: "10dp"
+							cols:1
+							roots: root
+							#orientation: "vertical"
+							CardText:
+								id: police
+								on_press:
+									root.menu_police(self)
+								MDLabel:
+									id: police_title
+									text: "Police"
+									bold: True
+									font_name: app.my_font
+									font_size: app.my_font_size
+									height: self.texture_size[1]
+								MDLabel:
+									id: police_lb  # the police label
+									padding: ["20dp", "0dp"]
+									text: app.my_font.split("/")[-1] #screen_manager.get_screen("main_screen").ids.id_kv_definition.font_name
+									font_name: app.my_font
+									font_size: app.my_font_size
+									height: self.texture_size[1]
+
+							MDSeparator:
+								md_bg_color: app.theme_cls.divider_color
+							CardText:
+								id: taille
+								on_press:
+									root.menu_taille(self)
+								MDLabel:
+									id: taille_title
+									text: "Taille"
+									bold: True
+									font_name: app.my_font
+									font_size: app.my_font_size
+									height: self.texture_size[1]
+								MDLabel:
+									id: taille_lb
+									padding: ["20dp", "0dp"]
+									text: str(app.my_font_size)[:-2]
+									font_name: app.my_font
+									font_size: app.my_font_size
+									height: self.texture_size[1]
+
+# VOIR MainApp.metre_gras() POUR DES EXPLICATIONS
+#							MDSeparator:
+#								md_bg_color: app.theme_cls.divider_color
+#							CardText:
+#								id: gras
+#								on_press:
+#									app.metre_gras()
+#								MDLabel:
+#									id: gras_title
+#									text: "Metre en gras"
+#									bold: True
+#									font_name: app.my_font
+#									font_size: app.my_font_size
+#									height: self.texture_size[1]
+#
+#								MDLabel:
+#									id: gras_lb
+#									padding: ["20dp", "0dp"]
+#									text: "[b]Non[/b]"
+#									font_name: app.my_font
+#									font_size: app.my_font_size
+#									height: self.texture_size[1]
+#									markup: True

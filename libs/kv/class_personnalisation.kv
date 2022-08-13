@@ -1,100 +1,210 @@
 #:import get_color_from_hex kivy.utils.get_color_from_hex
-##:import afficher_definition libs.py.ecran_principal.MainScreen.afficher_definition
-#:import toast kivymd.toast.toast
+##:import afficher_definition libs.py.ecran_principal.MainScreen. afficher_definition
+#:import ScrollEffect kivy.effects.scroll.ScrollEffect
+#:import M_CardIconButton libs.module.m_cardiconbutton
+#:import dp kivy.metrics.dp
+## ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'Subtitle1', 'Subtitle2', 'Body1', 'Body2', 'Button',
+##'Caption', 'Overline', 'Icon']
+
+<MySep>:
+	id: my_sep
+	size_hint_x: 0.5
+	color: [0, 0, 0, 1] if app.theme_cls.theme_style == "Light" else [1, 1, 1, 1]
+	height: "1dp"
+	pos_hint: {"center_x": .5, "center_y": .5}
+	#padding: [50, 50, 50, 50]
 
 <APropos>
 	orientation: "vertical"
 	size_hint_y:None
-	height: app.height_sreen * 0.6
-	MDBoxLayout:
-		orientation: "vertical"
-		spacing: "20dp"
-		MDBoxLayout:  # Presentation
-			orientation: "vertical"
-			size_hint: 1, 0.3
-			MDBoxLayout:
-				orientation: "horizontal"
-				MDLabel:
-					size_hint_x: 0.3
-					text: "Auteur: "
-				MDLabel:
-					text: "Soro Colotcholoman Moïse"
-					bold: True
-			MDBoxLayout:
-				orientation: "horizontal"
-				MDLabel:
-					size_hint_x: 0.3
-					text: "Email: "
-				MDLabel:
-					text: "soromoise4@gmail.com"
-					bold: True
-					markup: True
-			MDBoxLayout:
-				orientation: "horizontal"
-				MDLabel:
-					size_hint_x: 0.3
-					text: "Url: "
-				MDLabel:
-					id: letexte
-					text: "Non disponible"
-		MDBoxLayout:
-			#md_bg_color: get_color_from_hex("#ffffff")
-			ScrollView:
-				do_scroll_x: False
-				do_scroll_y: True
-				bar_width: 2
-				bar_margin: 0
-				MDLabel:
-					height: self.texture_size[1]
-					size_hint_y: None
-					#text_size: self.width, None
-					text: root.a_propos
+	height: root.height_sreen * 0.7
+	#width: app.width_sreen * 0.9
+	spacing: "5dp"
+	padding: [0, 0, 0, 0]
+#	MDBoxLayout:  # Tout le contenu
+#		orientation: "vertical"
+#		#spacing: "10dp"
 
+	MDBoxLayout:
+		padding: [0, 0, 0, 15]
+		size_hint: 1, None
+		height: long_sep.height
+		MySep:
+			id: long_sep
+			size_hint_x: 0.95
+			height: "3"
+			halign: "top"
+
+	MDBoxLayout:  # Presentation
+		id: presentation
+		orientation: "vertical"
+		#md_bg_color: get_color_from_hex("#ff0000")
+		size_hint: 1, None
+		height: nom_auteur.height + mail_auteur.height + url_auteur.height
+		MDLabel:  # Nom de l'auteur
+			id: nom_auteur
+			#md_bg_color: get_color_from_hex("#ff0000")
+			text: "Auteur : [b]Soro Colotcholoman Moïse[/b]"
+			font_name: app.my_font
+			height: self.texture_size[1]
+			font_size: app.my_font_size
+			markup: True
+			shorten: True
+			shorten_from: "right"
+			bold: False
+			halign: "center"
+
+		MDLabel:  # Email
+			id: mail_auteur
+			#md_bg_color: get_color_from_hex("#ff00ff")
+			text: "Email : [color=3333aa][u]soromoise4@gmail.com[/u][/color]"
+			bold: False
+			font_name: app.my_font
+			height: self.texture_size[1]
+			halign: "center"
+			font_size: app.my_font_size
+			shorten: True
+			shorten_from: "right"
+			markup: True
+
+		MDLabel:  # url
+			id: url_auteur
+			#md_bg_color: get_color_from_hex("#00ff00")
+			font_name: app.my_font
+			#font_size: "20dp"
+			halign: "center"
+			text: "URL : Non disponible"
+			shorten: True
+			shorten_from: "right"
+			height: self.texture_size[1]
+			font_size: app.my_font_size
+
+	MDBoxLayout:
+		padding: [0, 5, 0, 5]
+		size_hint: 1, None
+		height: middle_sep.height+5
+		MySep:
+			id: middle_sep
+
+	MDBoxLayout:
+		id: content_scroll
+		#md_bg_color: get_color_from_hex("#ffffff")
+		padding: [0, 5, 0, 0]
+		ScrollView:
+			do_scroll_x: False
+			do_scroll_y: True
+			#effect_cls: app.effet
+			bar_width: app.my_bar_width
+			#bar_pos_y: "left"#"ridht"
+			smooth_scroll_end: 2
+			scroll_type: ['content', 'bars']
+			bar_margin: app.my_bar_margin
+			#bar_radius: [50, 50, 50, 50]
+			bar_color: app.theme_cls.primary_dark
+			bar_inactive_color: app.theme_cls.primary_light
+			#padding: [0, 0, 30, 0]
+			MDLabel:
+				id: licence
+				height: self.texture_size[1]
+				size_hint_y: None
+				halign: 'justify'
+				font_name: app.my_font
+				#text_size: self.width, None
+				text: root.a_propos
+				markup: True
+				font_size: app.my_font_size
+
+	MDBoxLayout:
+		padding: [0, 5, 0, 5]
+		size_hint: 1, None
+		height: bottom_sep.height+5
+		MySep:
+			id: bottom_sep
+
+	MDCard:
+		size_hint: None, None
+		width: root.width-15
+		height: "45dp"
+		pos_hint: {"center_x": .5, "center_y": .5}
+		md_bg_color: [1, 1, 1, 1] if app.theme_cls.theme_style == "Light" else content_scroll.md_bg_color
+		ripple_behavior: True
+		elevation: 6# if app.theme_cls.theme_style == "Light" else 0
+		radius: ["15dp"]
+		on_release: root.parent.parent.parent.dismiss()
+		MDLabel:
+			id: fermer
+			text: "Fermer"
+			bold: True
+			halign: "center"
+			font_name: app.my_font
+			font_size: app.my_font_size
+			
 
 <ContentNavigationDrawer>:
-    BoxLayout:
-    	id: le
-        orientation: 'vertical'
-        #spacing: dp(10)
-        padding: dp(10)
+	MDBoxLayout:
+		id: contenu_navigation
+		orientation: 'vertical'
+		#spacing: dp(10)
+		padding: ["2dp", "15dp", "2dp", "2dp"]
+		radius: ["0dp", "40dp", "40dp", "0dp"]
 
-        BoxLayout:
-            size_hint_y: None
-            height: self.minimum_height
-            padding: [0, 50, 0, 10]
-            orientation: "vertical"
-
-            MDTextFieldRect:
-                id: search_field
-                hint_text: 'Entrez le mot à rechercher'
-                mode: "fill"
-                #font_size: 20
-                size_hint: 1, None
-                height: "40dp"
-                active_line: True  # Permet de voire la ligne qui souigne le texte saisie
-                on_text:
-                	root.voir_list_mots(self.text, True)
+		MDBoxLayout:  # bare de recherche
+			size_hint_y: None
+			height: "50dp"
+			padding: ["2dp", "10dp", "2dp", "2dp"]
+			orientation: "horizontal"
+			#md_bg_color: get_color_from_hex("#fff000")
+			MDTextField:
+				id: search_field
+				#icon_right: "arrow-down-drop-circle-outline"
+				hint_text: 'Entrez le mot à rechercher'
+				font_name_hint_text: app.my_font
+				font_size_hint_text: 50
+				#_hint_lbl_font_size: "50sp"
+				#mode: "fill"
+				font_size: "20dp"
+				font_name: app.my_font
+				size_hint: 1, None
+				height: "40dp"
+				active_line: True  # Permet de voire la ligne qui souigne le texte saisie
+				on_text:
+					print("ontext")
+					root.voir_list_mots(self.text, True)
 				on_focus:
+					print("on focus")
 					root.voir_list_mots(button_recherche = True)
-				on_text_validate: pass
-
-
-		BoxLayout:
+				on_text_validate:
+					print("on validate")
+					root.text_validate()
+			MDIconButton:
+				id: id_vider_champ_saisie
+				icon: "magnify" if search_field.text == "" else "close"
+				_no_ripple_effect: True
+				ripple_color: app.ripple_color
+				#user_font_size: "35dp"
+				#theme_text_color: "Custom"
+				#text_color: [1, 1, 1, 1]
+				on_release:
+					search_field.text = ""
+					search_field.focus = True
+		MDBoxLayout:
 			RecycleView:
 				id: rv
 				key_viewclass: 'viewclass'
 				key_size: 'height'
-				padding: [0, 100, 0, 10]
+				#padding: [0, 100, 0, 10]
 				do_scroll_x: False
 				do_scroll_y: True
-				bar_margin: 0
-				bar_width: 5
-				bar_color: get_color_from_hex("#70a0f0")
-				bar_inactive_color: get_color_from_hex("#93c0ff")
+				#effect_cls: app.effet
+				bar_margin: app.my_bar_margin-dp(-10)
+				bar_width: app.my_bar_width
+				smooth_scroll_end: 100
+				bar_radius: [50, 50, 50, 50]
+				bar_color: app.theme_cls.primary_dark
+				bar_inactive_color: app.theme_cls.primary_light
 				scroll_type: ['content', 'bars']
-				#on_scroll_move:  # Peut etre exploiter
-				#	print("je moov")
 				RecycleBoxLayout:
+					id: rb
 					#padding: dp(10)
 					default_size: None, dp(48)
 					default_size_hint: 1, None
@@ -102,32 +212,107 @@
 					height: self.minimum_height
 					orientation: 'vertical'
 
-
 <CustomOneLineListItem>:
 	id: customoneline
+	my_app: app
 	text: root.text
+	font_name: app.my_font
+#	_lbl_primary.font_name: app.my_font
+	ripple_color: app.theme_cls.primary_light
 	on_press:
 		root.parent.parent.parent.parent.parent.parent.parent.parent.afficher_definition(idmot = self.text.lower(), faire_requete=True)
 
 
-<CustomOneLineRightIconListItem>:
-    size_hint_y: None
-    height: content.height
-    anchor: "right"
-    type_swipe: "auto"
+<CustomOneLineRightIconListItem>:  # L'élément mot acec la croix se trouvent à l'interieur de la liste des element
+	size_hint_y: None
+	height: content.height
+	anchor: "right"
+	type_swipe: "auto"
 
 	OneLineRightIconListItem:
 		id: content
 		text: root.text
 		_no_ripple_effect: True
-		on_press:
-			root.parent.parent.parent.parent.parent.parent.get_screen("liste_elements").retour()
+		on_release:
+			root.parent.parent.parent.parent.parent.parent.parent.get_screen("liste_elements").retour()
 			app.changer_ecran("main_screen", "right")
-			root.parent.parent.parent.parent.parent.parent.get_screen("main_screen").afficher_definition(idmot = self.text.lower(), faire_requete=True)
+			root.parent.parent.parent.parent.parent.parent.parent.get_screen("main_screen").afficher_definition(idmot = self.text.lower(), faire_requete=True)
 		IconRightWidget:
 			icon: "close"
-			color: [1, 0, 0, 0.2]
+			#color: [1, 0, 0, 0.2]
+			#theme_text_color: "Custom"
+			ripple_color: app.ripple_color
 			on_release:
-				root.parent.parent.parent.parent.parent.suprimer(root.text)
-				root.parent.remove_widget(root)
+				root.parent.parent.parent.parent.parent.parent.suprimer(root.text)
+				#root.parent.remove_widget(root)
+
+<ContenRef>:
+	orientation: "vertical"
+	size_hint_y:None
+	height: root.height_sreen * 0.7
+	#width: app.width_sreen * 0.9
+	spacing: "5dp"
+	padding: [0, 0, 0, 0]
+
+	MDBoxLayout:
+		padding: [0, 0, 0, 15]
+		size_hint: 1, None
+		height: long_sep.height
+		MySep:
+			id: long_sep
+			size_hint_x: 0.95
+			height: "3"
+			halign: "top"
+	MDBoxLayout:
+		id: content_scroll
+		#md_bg_color: get_color_from_hex("#ffffff")
+		padding: [0, 5, 0, 0]
+		ScrollView:
+			do_scroll_x: False
+			do_scroll_y: True
+			#effect_cls: app.effet
+			bar_width: app.my_bar_width
+			#bar_pos_y: "left"#"ridht"
+			smooth_scroll_end: 2
+			scroll_type: ['content', 'bars']
+			bar_margin: app.my_bar_margin
+			#bar_radius: [50, 50, 50, 50]
+			bar_color: app.theme_cls.primary_dark
+			bar_inactive_color: app.theme_cls.primary_light
+			#padding: [0, 0, 30, 0]
+			MDLabel:
+				id: licence
+				height: self.texture_size[1]
+				size_hint_y: None
+				halign: 'justify'
+				font_name: app.my_font
+				#text_size: self.width, None
+				text: root.definition
+				markup: True
+				font_size: app.my_font_size
+
+	MDBoxLayout:
+		padding: [0, 5, 0, 5]
+		size_hint: 1, None
+		height: bottom_sep.height+5
+		MySep:
+			id: bottom_sep
+
+	MDCard:
+		size_hint: None, None
+		width: root.width-15
+		height: "45dp"
+		pos_hint: {"center_x": .5, "center_y": .5}
+		md_bg_color: [1, 1, 1, 1] if app.theme_cls.theme_style == "Light" else content_scroll.md_bg_color
+		ripple_behavior: True
+		elevation: 6# if app.theme_cls.theme_style == "Light" else 0
+		radius: ["15dp"]
+		on_release: root.parent.parent.parent.dismiss()
+		MDLabel:
+			id: fermer
+			text: "Fermer"
+			bold: True
+			halign: "center"
+			font_name: app.my_font
+			font_size: app.my_font_size
 
