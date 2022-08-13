@@ -1,7 +1,7 @@
 [app]
 
 # (str) Title of your application
-title = JargonInformatique
+title = Jargon Informatique
 
 # (str) Package name
 package.name = jargoninformatique
@@ -19,16 +19,16 @@ source.include_exts = py,png,jpg,kv,atlas,ico,sqlite
 #source.include_patterns = assets/*,images/*.png
 
 # (list) Source files to exclude (let empty to not exclude anything)
-source.exclude_exts = spec, spec~
+source.exclude_exts = spec,txt
 
 # (list) List of directory to exclude (let empty to not exclude anything)
-source.exclude_dirs = tests, bin,.buildozer,test,.idea
+source.exclude_dirs = tests,bin,.buildozer,test,.idea,apk,.git
 
 # (list) List of exclusions using pattern matching
 #source.exclude_patterns = license,images/*/*.jpg
 
 # (str) Application versioning (method 1)
-version = 1.0.0
+version = 22.08.11
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
@@ -36,7 +36,8 @@ version = 1.0.0
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3, kivy, kivymd, sqlite3, Pillow, kvdroid, hostpython3, android
+requirements = python3,kivy,kivymd,sqlite3,Pillow,kvdroid,hostpython3,android
+#, +buildozer
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -52,7 +53,7 @@ presplash.filename = %(source.dir)s/src/images/logo.ico
 icon.filename = %(source.dir)s/src/images/logo.ico
 
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
-orientation = all
+orientation = portrait
 
 # (list) List of service to declare
 #services = NAME:ENTRYPOINT_TO_PY,NAME2:ENTRYPOINT2_TO_PY
@@ -75,7 +76,7 @@ android.presplash_color = #FFFFFF
 android.permissions = WRITE_EXTERNAL_STORAGE, INTERNET, ACCESS_NETWORK_STATE
 
 # (int) Target Android API, should be as high as possible.
-android.api = 27
+android.api = 28
 
 # (int) Minimum API your APK will support.
 android.minapi = 21
@@ -84,7 +85,7 @@ android.minapi = 21
 android.sdk = 24
 
 # (str) Android NDK version to use
-android.ndk = 19b
+android.ndk = 19c
 
 # (int) Android NDK API to use. This is the minimum API your app will support, it should usually match android.minapi.
 #android.ndk_api = 21
@@ -93,13 +94,13 @@ android.ndk = 19b
 #android.private_storage = True
 
 # (str) Android NDK directory (if empty, it will be automatically downloaded.)
-#android.ndk_path =
+#android.ndk_path = /home/soro/.buildozer/android/platform/android-ndk-r19c
 
 # (str) Android SDK directory (if empty, it will be automatically downloaded.)
-#android.sdk_path =
+#android.sdk_path = /media/soro/42750c67-9796-40bf-b984-63c950abf31c/home/soro/.buildozer/android/platform/android-sdk/
 
 # (str) ANT directory (if empty, it will be automatically downloaded.)
-#android.ant_path =
+#android.ant_path = /media/soro/42750c67-9796-40bf-b984-63c950abf31c/home/soro/.buildozer/android/platform
 
 # (bool) If True, then skip trying to update the Android sdk
 # This can be useful to avoid excess Internet downloads or save time
@@ -110,7 +111,7 @@ android.skip_update = True
 # agreements. This is intended for automation only. If set to False,
 # the default, you will be shown the license when first running
 # buildozer.
-# android.accept_sdk_license = False
+# android.accept_sdk_license = True
 
 # (str) Android entry point, default is ok for Kivy-based app
 #android.entrypoint = org.renpy.android.PythonActivity
@@ -162,12 +163,6 @@ android.skip_update = True
 # e.g. android.add_packaging_options = "exclude 'META-INF/common.kotlin_module'", "exclude 'META-INF/*.kotlin_module'"
 #android.add_gradle_repositories =
 
-# (list) Java classes to add as activities to the manifest.
-#android.add_activities = com.example.ExampleActivity
-
-# (str) OUYA Console category. Should be one of GAME or APP
-# If you leave this blank, OUYA support will not be enabled
-#android.ouya.category = GAME
 
 # (str) Filename of OUYA Console icon. It must be a 732x412 png image.
 #android.ouya.icon.filename = %(source.dir)s/data/ouya_icon.png
@@ -177,17 +172,6 @@ android.skip_update = True
 
 # (str) launchMode to set for the main activity
 #android.manifest.launch_mode = standard
-
-# (list) Android additional libraries to copy into libs/armeabi
-#android.add_libs_armeabi = libs/android/*.so
-#android.add_libs_armeabi_v7a = libs/android-v7/*.so
-#android.add_libs_arm64_v8a = libs/android-v8/*.so
-#android.add_libs_x86 = libs/android-x86/*.so
-#android.add_libs_mips = libs/android-mips/*.so
-
-# (bool) Indicate whether the screen should stay on
-# Don't forget to add the WAKE_LOCK permission if you set this to True
-#android.wakelock = False
 
 # (list) Android application meta-data to set (key=value format)
 #android.meta_data =
@@ -223,19 +207,8 @@ android.arch = armeabi-v7a
 #p4a.branch = master
 
 # (str) python-for-android git clone directory (if empty, it will be automatically cloned from github)
-p4a.source_dir = /mnt/501334001D7C1E95/Document/PycharmProjects/p4a/python-for-android-develop
+#p4a.source_dir = /mnt/sda3/Document/PycharmProjects/p4a/python-for-android-develop
 
-# (str) The directory in which python-for-android should look for your own build recipes (if any)
-#p4a.local_recipes =
-
-# (str) Filename to the hook for p4a
-#p4a.hook =
-
-# (str) Bootstrap to use for android builds
-# p4a.bootstrap = sdl2
-
-# (int) port number to specify an explicit --port= p4a argument (eg for bootstrap flask)
-#p4a.port =
 
 
 [buildozer]
