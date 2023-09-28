@@ -4,13 +4,6 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
 from kivy.utils import platform
 
-# try:
-# 	print("je fait le try")
-# 	# from kivmob import KivMob, TestIds
-# 	from kvdroid import toast  # toast pour android fait en java
-# except Exception as e:
-# 	print("l'erreur est : ", e)
-# 	from kivymd.toast import toast  # toast pour desktop fait avec kivymd'''
 from kivymd.toast import toast
 from kivymd.uix.button import MDFlatButton, MDRaisedButton
 from kivymd.uix.dialog import MDDialog
@@ -126,7 +119,7 @@ class ListeElements(Screen, BoxLayout):
 					text="Cette action supprimeras l'ensemble des mot contenue dans l'historique de "
 					     "recherche" if ListeElements.is_historique else "Cette action supprimeras l'ensemble des mot contenue dans "
 					                                                     "la liste des favoris",
-					opacity=0.7,
+					opacity=1,
 					buttons=[
 						MDFlatButton(
 							text="Annuler",

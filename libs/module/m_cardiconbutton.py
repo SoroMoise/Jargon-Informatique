@@ -72,7 +72,7 @@ class M_CardIconButton(MDCard):
                 halign="center", size_hint=(None, None),
                 valign="center"
             )
-            #self.label.text_size = self.label.size
+            self.label.text_size = self.label.size
             self.label.height = "200dp"
             self.label.width = "200dp"
             self.ids.grid.add_widget(self.label)
@@ -123,21 +123,18 @@ class M_CardIconButton(MDCard):
 if __name__ == "__main__":
     from kivymd.app import MDApp
 
-
-    class TestApp(MDApp):
-        def build(self):
-            return Builder.load_string(
-                """
-# kv_start
+    component = """
 M_CardIconButton:
-    icon: "android"
+    icon: "google"
     size: 500, 100
     text: "Ce fichier a été modifier par Soro Moïse"
     pos_hint: {"center_x": .5, "center_y": .5}
     on_release: print("lol")
-# kv_end
-            """
-            )
+    """
+    class TestApp(MDApp):
+        def build(self):
+            print("")
+            return Builder.load_string(component)
 
 
     TestApp().run()

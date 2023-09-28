@@ -17,7 +17,6 @@
 		theme_text_color: "Custom"
 		text: root.text
 		user_font_size: "10dp"
-		#outline_width: 1 # met une bordure noir(par defaut) sur le text
 		font_name: app.my_font
 		shorten: True
 		shorten_from: "right"
@@ -32,7 +31,7 @@
 	ripple_behavior: True
 	padding: ["15dp", "5dp"]
 	radius: ["20dp"]
-	elevation: 10# if app.theme_cls.theme_style=="Light" else 0
+	elevation: 3# if app.theme_cls.theme_style=="Light" else 0
 	md_bg_color: app.theme_cls.bg_normal if app.theme_cls.theme_style=="Light" else app.theme_cls.divider_color
 #	md_bg_color: app.theme_cls.bg_normal# if app.theme_cls.theme_style == "Light" else app.theme_cls.bg_normal
 	orientation: "vertical"
@@ -48,24 +47,24 @@
 		MDBoxLayout:
 			size_hint: 1, None
 			height: toolbar.height
-			MDToolbar:
+			MDTopAppBar:
 			    id: toolbar
 			    title: "Paramètres"
 			    #anchor_title: "center"
 			    md_bg_color: app.theme_cls.primary_color
 			    pos_hint: {"top": 1}
-			    elevation: 5
+			    elevation: 1
 			    left_action_items: [["chevron-left", lambda x: app.changer_ecran("main_screen", "right")]]
 
 		MDBoxLayout:
 			orientation: "vertical"
-			padding: "10dp", "2dp", "5dp", "10dp"
+			padding: "10dp", "0dp", "5dp", "10dp"
 		    ScrollView:
 				do_scroll_x: False
 				#effect_cls: app.effet
 				do_scroll_y: True
 				bar_width: app.my_bar_width
-				bar_margin: "-5sp"
+				bar_margin: "-2sp"
 				smooth_scroll_end: 10
 				bar_color: app.theme_cls.primary_dark
 				bar_inactive_color: app.theme_cls.primary_light

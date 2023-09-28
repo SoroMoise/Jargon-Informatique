@@ -1,176 +1,164 @@
 #:import get_color_from_hex kivy.utils.get_color_from_hex
 
 <MainScreen>
-	# voire si je peut utiliser on enter ici pour régler le problème du btn aimer
-	my_app: app
-	MDNavigationLayout:
-        ScreenManager:
-            id: screen_manager
-            Screen:
+  my_app: app
+  MDNavigationLayout:
+    ScreenManager:
+      id: screen_manager
+      Screen:
 
+        MDBoxLayout:
+          orientation: "vertical"
+          MDTopAppBar:
+            id: toolbar
+            title: "Jargon Informatique"
+            left_action_items: [["magnify", lambda x: [root.recherche(), root.focus()]]]
+            right_action_items: [["dots-vertical", lambda x: root.affiche_menu(x)]]
+
+          MDBoxLayout:  # Toute la page sauf la Toolbar
+            orientation: "vertical"
+            md_bg_color: get_color_from_hex("#f2f2f2") if app.theme_cls.theme_style == "Light" else get_color_from_hex("#010101")
+            id: le_contenu
+            MDBoxLayout:  # Le mot à définir
+              md_bg_color: app.theme_cls.primary_dark
+              size_hint: 1, None #0.08
+              height: id_kv_mot.height + 10
+              padding: [30, 5, 5, 5]
+              MDLabel:  # Le mot a définir
+                id: id_kv_mot
+                text: ""
+                #font_size: 18
+                height: self.texture_size[1]+10
+                font_name: app.my_font
+                font_size: app.my_font_size
+                color: app.theme_cls.text_color
+                bold: True
+            MDBoxLayout:  # Le contenu du scroll
+              padding: [1, 10]
+              ScrollView:
+                do_scroll_x: False
+                #effect_cls: app.effet
+                do_scroll_y: True
+                padding: [12, 40]
+                bar_width: app.my_bar_width
+                bar_margin: "0sp"
+                smooth_scroll_end: 10
+                bar_color: app.theme_cls.primary_dark
+                bar_inactive_color: app.theme_cls.primary_light
+                scroll_type: ['bars', 'content']
                 MDBoxLayout:
-                    orientation: "vertical"
-                    MDToolbar:
-                        id: toolbar
-                        title: "Jargon Informatique"
-                        #anchor_title: "center"
-                        #md_bg_color: get_color_from_hex("#7aa6ff")
-                        left_action_items: [["magnify", lambda x: [root.recherche(), root.focus()]]]
-                        right_action_items: [["dots-vertical", lambda x: root.affiche_menu(x)]]
+                  orientation: "vertical"
+                  size_hint: 1, None
+                  height: id_kv_definition.height + id_kv_type.height + 80
+                  #md_bg_color: get_color_from_hex("#ffffff")
+                  padding: [0, 0, 0, 30]
 
-                    MDBoxLayout:  # Toute la page sauf la Toolbar
-                        orientation: "vertical"
-                        md_bg_color: get_color_from_hex("#f2f2f2") if app.theme_cls.theme_style == "Light" else get_color_from_hex("#010101")
-                        id: le_contenu
-                        MDBoxLayout:  # Le mot à définir
-                            md_bg_color: app.theme_cls.primary_dark
-                            size_hint: 1, None #0.08
-                            height: id_kv_mot.height + 10
-                            padding: [30, 5, 5, 5]
-                            MDLabel:  # Le mot a définir
-                                id: id_kv_mot
-                                text: ""
-                                #font_size: 18
-                                height: self.texture_size[1]+10
-                                font_name: app.my_font
-                                font_size: app.my_font_size
-                                color: app.theme_cls.text_color
-                                bold: True
-                        MDBoxLayout:  # Le contenu du scroll
-                            padding: [1, 10]
-                            ScrollView:
-                                do_scroll_x: False
-                                #effect_cls: app.effet
-                                do_scroll_y: True
-                                padding: [12, 40]
-                                bar_width: app.my_bar_width
-                                bar_margin: "0sp"
-                                smooth_scroll_end: 10
-                                bar_color: app.theme_cls.primary_dark
-                                bar_inactive_color: app.theme_cls.primary_light
-                                scroll_type: ['bars', 'content']
-                                MDBoxLayout:
-                                    orientation: "vertical"
-                                    size_hint: 1, None
-                                    height: id_kv_definition.height + id_kv_type.height + 80
-                                    #md_bg_color: get_color_from_hex("#ffffff")
-                                    padding: [0, 0, 0, 30]
+                  MDBoxLayout:
+                    #radius: [45, 45, 45, 45]
+                    padding: [8, 20, 8, 20]
+                    # md_bg_color: get_color_from_hex("#00fcfc")
+                    size_hint: 1, None
+                    opacity: 1
+                    height: id_kv_type.height
+                    MDLabel:  # La definition du mot
+                      id: id_kv_type
+                      markup: True
+                      #size_hint_y: None
+                      #bold: True
+                      font_size: app.my_font_size
+                      padding: [15, 5]
+                      height: self.texture_size[1]+10
+                      #text_size: self.width, None
+                      #md_bg_color: get_color_from_hex("#ffffff")
+                      text: ""
+                      font_style: "Caption"
+                      halign: 'justify'
+                  MDBoxLayout:
+                    id: box_def
+                    radius: [45, 45, 45, 45]
+                    padding: [10, 20, 10, 20]
+                    #elevation: 10
+                    md_bg_color: get_color_from_hex("#ffffff") if app.theme_cls.theme_style == "Light" else get_color_from_hex("#171717")
+                    size_hint: 1, None
+                    height: id_kv_definition.height + 40
+                    MDLabel:  # La definition du mot
+                      id: id_kv_definition
+                      markup: True
+                      font_size: app.my_font_size
+                      padding: [15, 5]
+                      height: self.texture_size[1]
+                      text: root.definition
+                      font_name: app.my_font
+                      text_size: (0, None)
+                      halign: 'justify'
+            MDRelativeLayout:  # La bare d'en bas
+              id: buttom_bar
+              radius: [40, 40, 0, 0]
+              #elevation: 30
+              md_bg_color: app.theme_cls.primary_dark
+              #md_bg_color: get_color_from_hex("#70a0f0")
+              #padding: [self.width*0.04, 0, self.width*0.04, 0]
+              size_hint: 1, None  # 0.07
+              height: "60dp"
 
-                                    MDBoxLayout:
-                                        #radius: [45, 45, 45, 45]
-                                        padding: [8, 20, 8, 20]
-                                        # md_bg_color: get_color_from_hex("#00fcfc")
-                                        size_hint: 1, None
-                                        opacity: 1
-                                        height: id_kv_type.height
-                                        MDLabel:  # La definition du mot
-                                            id: id_kv_type
-                                            markup: True
-                                            #size_hint_y: None
-                                            #bold: True
-                                            font_size: app.my_font_size
-                                            padding: [15, 5]
-                                            height: self.texture_size[1]+10
-                                            #text_size: self.width, None
-                                            #md_bg_color: get_color_from_hex("#ffffff")
-                                            text: ""
-                                            font_style: "Caption"
-                                            halign: 'justify'
-                                    MDBoxLayout:
-                                        id: box_def
-                                        radius: [45, 45, 45, 45]
-                                        padding: [10, 20, 10, 20]
-                                        #elevation: 10
-                                        md_bg_color: get_color_from_hex("#ffffff") if app.theme_cls.theme_style == "Light" else get_color_from_hex("#171717")
-                                        size_hint: 1, None
-                                        #opacity: 0.6
-                                        height: id_kv_definition.height + 40
-                                        MDLabel:  # La definition du mot
-                                            id: id_kv_definition
-                                            markup: True
-                                            font_size: app.my_font_size
-                                            padding: [15, 5]
-                                            height: self.texture_size[1]
-                                            text: root.definition
-			                                font_name: app.my_font
-			                                text_size: (0, None)
-                                            halign: 'justify'
-                        MDRelativeLayout:  # La bare d'en bas
-                            id: buttom_bar
-                            radius: [40, 40, 0, 0]
-                            #elevation: 30
-                            md_bg_color: app.theme_cls.primary_dark
-                            #md_bg_color: get_color_from_hex("#70a0f0")
-                            #padding: [self.width*0.04, 0, self.width*0.04, 0]
-                            size_hint: 1, None  # 0.07
-                            height: "60dp"
+              MDFloatingActionButton:  # gauche
+                id: chevron_left
+                icon: "chevron-left"
+                user_font_size: "35dp"
+                theme_text_color: "Custom"
+                ripple_color: app.ripple_color
+                pos_hint: {"center_x": .125, "center_y": .5}
+                text_color: [1, 1, 1, 1]
+                on_press:
+                  root.mot_precedent()
 
-                            MDFloatingActionButton:  # gauche
-                                id: chevron_left
-                                icon: "chevron-left"
-                                user_font_size: "35dp"
-                                theme_text_color: "Custom"
-                                ripple_color: app.ripple_color
-                                pos_hint: {"center_x": .125, "center_y": .5}
-                                text_color: [1, 1, 1, 1]
-                                on_press:
-                                    root.mot_precedent()
-                                    #print(id_kv_mot.height)
+              MDFloatingActionButton:  # aimer
+                id: button_aimer
+                icon: "heart"
+                user_font_size: "35dp"
+                theme_text_color: "Custom"
+                pos_hint: {"center_x": .375, "center_y": .5}
+                ripple_color: app.ripple_color
+                on_press:
+                  root.aimer(True)
 
-                            MDFloatingActionButton:  # aimer
-                                id: button_aimer
-                                icon: "heart"
-                                user_font_size: "35dp"
-                                theme_text_color: "Custom"
-                                #text_color: get_color_from_hex("#ffffff")
-                                pos_hint: {"center_x": .375, "center_y": .5}
-                                ripple_color: app.ripple_color
-                                on_press:
-                                    root.aimer(True)
+              MDFloatingActionButton:  # aleatoire
+                icon: "shuffle-variant"
+                user_font_size: "35dp"
+                theme_text_color: "Custom"
+                text_color: [1, 1, 1, 1]
+                ripple_color: app.ripple_color
+                pos_hint: {"center_x": .625, "center_y": .5}
+                on_press:
+                  root.recherche_aleatoir()
 
-                            MDFloatingActionButton:  # aleatoire
-                                icon: "shuffle-variant"
-                                user_font_size: "35dp"
-                                theme_text_color: "Custom"
-                                text_color: [1, 1, 1, 1]
-                                ripple_color: app.ripple_color
-                                pos_hint: {"center_x": .625, "center_y": .5}
-                                on_press:
-                                    root.recherche_aleatoir()
+              MDFloatingActionButton:  # droite
 
-                            MDFloatingActionButton:  # droite
-
-                                icon: "chevron-right"
-                                user_font_size: "35dp"
-                                theme_text_color: "Custom"
-                                text_color: [1, 1, 1, 1]
-                                pos_hint: {"center_x": .875, "center_y": .5}
-                                ripple_color: app.ripple_color
-                                on_press:
-                                    root.mot_suivant()
-                                    #app.changer_police()
-                                    #app.af()
+                icon: "chevron-right"
+                user_font_size: "35dp"
+                theme_text_color: "Custom"
+                text_color: [1, 1, 1, 1]
+                pos_hint: {"center_x": .875, "center_y": .5}
+                ripple_color: app.ripple_color
+                on_press:
+                  root.mot_suivant()
+                  #app.changer_police()
+                  #app.af()
 
         MDNavigationDrawer:
-            id: nav_drawer
-            radius: [0, 40, 40, 0]
-            #type: "modal" standard
-            type: "modal"  # Pourrais permettre de changer la façon dont la MDNavigationDrawer s'ouvre
-            #md_bg_color: get_color_from_hex("#fff000")
-            enable_swiping: True
-            #scrim_color: [0, 1, 1, 1]
-            swipe_edge_width: "20dp"  # la taille de l'espace dans laquelle la navigation sort quant on glisse le doigt
-            #swipe_distance: 4  # la distance que doit parcourir le doigt avant que la Navigation commence à sortir
-            elevation:0
-            #close_on_click: True
-    #			on_touch_move:
-    #				print("touch move")
-    #				print(root.swipe)
-    #				root.swipe: False
-    #				print(self.enable_swiping)
-    #				self.enable_swiping=False if self.status == "opened" else True
+          id: nav_drawer
+          radius: [0, 40, 40, 0]
+          #type: "modal" standard
+          type: "modal"  # Pourrais permettre de changer la façon dont la MDNavigationDrawer s'ouvre
+          #md_bg_color: get_color_from_hex("#fff000")
+          enable_swiping: True
+          #scrim_color: [0, 1, 1, 1]
+          swipe_edge_width: "20dp"  # la taille de l'espace dans laquelle la navigation sort quant on glisse le doigt
+          #swipe_distance: 4  # la distance que doit parcourir le doigt avant que la Navigation commence à sortir
+          elevation:0
+          #close_on_click: True
 
-            ContentNavigationDrawer:
-                id: content_nav_drawer
-                screen_manager: screen_manager
-                nav_drawer: nav_drawer
+          ContentNavigationDrawer:
+            id: content_nav_drawer
+            screen_manager: screen_manager
+            nav_drawer: nav_drawer

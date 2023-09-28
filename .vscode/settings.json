@@ -1,0 +1,13 @@
+{
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.python",
+    "editor.formatOnSave": true
+  },
+  "python.analysis.typeCheckingMode": "basic",
+  "python.formatting.provider": "none",
+  "materialkv.pythonFile": "main.py",
+  "editor.detectIndentation": false,
+  "editor.tabSize": 2,
+  "workbench.editor.pinnedTabSizing": "compact",
+  "terminal.integrated.tabStopWidth": 2
+}

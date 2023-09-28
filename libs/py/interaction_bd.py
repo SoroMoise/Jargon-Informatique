@@ -10,13 +10,12 @@ from sqlite3 import connect
 from string import ascii_lowercase, digits
 from sys import exit
 
-# from time import time
 
 try:
 	connection = connect("src/base_de_donner/dictionnaire.sqlite")
 	curseur = connection.cursor()
 except Exception as e:
-	print("une erreur c'est produite, le code de l'erreur est --> : ", e)
+	print("Exeption : ==============>>>>>>", e)
 	exit("Erreur lier a la base de donnée")
 
 
@@ -65,7 +64,8 @@ def ajouter_mot(table, id_mot, date) -> None:
 	#  complexe :"""
 	try:
 		numero_id = curseur.execute(f"SELECT numero FROM {table} ORDER BY numero DESC LIMIT 1").fetchone()[0] + 1
-	except Exception:
+	except Exception as e:
+		print("Exeption : ==============>>>>>>, ajouter_mot", e)
 		numero_id = 0
 	
 	curseur.execute(f"INSERT INTO {table} VALUES(?, ?, ?)", (numero_id, str(id_mot), str(date)))

@@ -1,49 +1,38 @@
 #:import get_color_from_hex kivy.utils.get_color_from_hex
-##:import afficher_definition libs.py.ecran_principal.MainScreen. afficher_definition
 #:import ScrollEffect kivy.effects.scroll.ScrollEffect
-#:import M_CardIconButton libs.module.m_cardiconbutton
 #:import dp kivy.metrics.dp
-## ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'Subtitle1', 'Subtitle2', 'Body1', 'Body2', 'Button',
-##'Caption', 'Overline', 'Icon']
 
-<MySep>:
+
+<CustomSeparator>:
 	id: my_sep
 	size_hint_x: 0.5
 	color: [0, 0, 0, 1] if app.theme_cls.theme_style == "Light" else [1, 1, 1, 1]
 	height: "1dp"
 	pos_hint: {"center_x": .5, "center_y": .5}
-	#padding: [50, 50, 50, 50]
 
 <APropos>
 	orientation: "vertical"
 	size_hint_y:None
 	height: root.height_sreen * 0.7
-	#width: app.width_sreen * 0.9
 	spacing: "5dp"
 	padding: [0, 0, 0, 0]
-#	MDBoxLayout:  # Tout le contenu
-#		orientation: "vertical"
-#		#spacing: "10dp"
+	# MDBoxLayout:
+	# 	padding: [0, 0, 0, 15]
+	# 	size_hint: 1, None
+	# 	height: long_sep.height
+		# CustomSeparator:
+		# 	id: long_sep
+		# 	size_hint_x: 0.95
+		# 	height: "1"
+		# 	halign: "top"
 
 	MDBoxLayout:
-		padding: [0, 0, 0, 15]
-		size_hint: 1, None
-		height: long_sep.height
-		MySep:
-			id: long_sep
-			size_hint_x: 0.95
-			height: "3"
-			halign: "top"
-
-	MDBoxLayout:  # Presentation
 		id: presentation
 		orientation: "vertical"
-		#md_bg_color: get_color_from_hex("#ff0000")
 		size_hint: 1, None
 		height: nom_auteur.height + mail_auteur.height + url_auteur.height
-		MDLabel:  # Nom de l'auteur
+		MDLabel:
 			id: nom_auteur
-			#md_bg_color: get_color_from_hex("#ff0000")
 			text: "Auteur : [b]Soro Colotcholoman Moïse[/b]"
 			font_name: app.my_font
 			height: self.texture_size[1]
@@ -56,7 +45,6 @@
 
 		MDLabel:  # Email
 			id: mail_auteur
-			#md_bg_color: get_color_from_hex("#ff00ff")
 			text: "Email : [color=3333aa][u]soromoise4@gmail.com[/u][/color]"
 			bold: False
 			font_name: app.my_font
@@ -69,9 +57,7 @@
 
 		MDLabel:  # url
 			id: url_auteur
-			#md_bg_color: get_color_from_hex("#00ff00")
 			font_name: app.my_font
-			#font_size: "20dp"
 			halign: "center"
 			text: "URL : Non disponible"
 			shorten: True
@@ -83,22 +69,20 @@
 		padding: [0, 5, 0, 5]
 		size_hint: 1, None
 		height: middle_sep.height+5
-		MySep:
+		CustomSeparator:
 			id: middle_sep
 
 	MDBoxLayout:
 		id: content_scroll
-		#md_bg_color: get_color_from_hex("#ffffff")
 		padding: [0, 5, 0, 0]
 		ScrollView:
 			do_scroll_x: False
 			do_scroll_y: True
-			#effect_cls: app.effet
-			bar_width: app.my_bar_width
+			bar_width: 4
 			#bar_pos_y: "left"#"ridht"
 			smooth_scroll_end: 2
 			scroll_type: ['content', 'bars']
-			bar_margin: app.my_bar_margin
+			bar_margin: dp(-10)
 			#bar_radius: [50, 50, 50, 50]
 			bar_color: app.theme_cls.primary_dark
 			bar_inactive_color: app.theme_cls.primary_light
@@ -118,7 +102,7 @@
 		padding: [0, 5, 0, 5]
 		size_hint: 1, None
 		height: bottom_sep.height+5
-		MySep:
+		CustomSeparator:
 			id: bottom_sep
 
 	MDCard:
@@ -128,7 +112,7 @@
 		pos_hint: {"center_x": .5, "center_y": .5}
 		md_bg_color: [1, 1, 1, 1] if app.theme_cls.theme_style == "Light" else content_scroll.md_bg_color
 		ripple_behavior: True
-		elevation: 6# if app.theme_cls.theme_style == "Light" else 0
+		elevation: 2# if app.theme_cls.theme_style == "Light" else 0
 		radius: ["15dp"]
 		on_release: root.parent.parent.parent.dismiss()
 		MDLabel:
@@ -168,13 +152,10 @@
 				height: "40dp"
 				active_line: True  # Permet de voire la ligne qui souigne le texte saisie
 				on_text:
-					print("ontext")
 					root.voir_list_mots(self.text, True)
 				on_focus:
-					print("on focus")
 					root.voir_list_mots(button_recherche = True)
 				on_text_validate:
-					print("on validate")
 					root.text_validate()
 			MDIconButton:
 				id: id_vider_champ_saisie
@@ -220,10 +201,11 @@
 #	_lbl_primary.font_name: app.my_font
 	ripple_color: app.theme_cls.primary_light
 	on_press:
-		root.parent.parent.parent.parent.parent.parent.parent.parent.afficher_definition(idmot = self.text.lower(), faire_requete=True)
+		root.parent.parent.parent.parent.parent.screen_manager.get_screen("main_screen").afficher_definition(idmot = self.text.lower(), faire_requete=True)
+		# root.my_app.afficher_definition(idmot = self.text.lower(), faire_requete=True)
 
 
-<CustomOneLineRightIconListItem>:  # L'élément mot acec la croix se trouvent à l'interieur de la liste des element
+<CustomOneLineRightIconListItem>:  # L'élément mot avec la croix se trouvent à l'interieur de la liste des element
 	size_hint_y: None
 	height: content.height
 	anchor: "right"
@@ -234,13 +216,12 @@
 		text: root.text
 		_no_ripple_effect: True
 		on_release:
+			print("root.parent.parent.parent.parent.parent.parent.parent : ", root.parent.parent.parent.parent.parent.parent.parent)
 			root.parent.parent.parent.parent.parent.parent.parent.get_screen("liste_elements").retour()
 			app.changer_ecran("main_screen", "right")
 			root.parent.parent.parent.parent.parent.parent.parent.get_screen("main_screen").afficher_definition(idmot = self.text.lower(), faire_requete=True)
 		IconRightWidget:
 			icon: "close"
-			#color: [1, 0, 0, 0.2]
-			#theme_text_color: "Custom"
 			ripple_color: app.ripple_color
 			on_release:
 				root.parent.parent.parent.parent.parent.parent.suprimer(root.text)
@@ -258,7 +239,7 @@
 		padding: [0, 0, 0, 15]
 		size_hint: 1, None
 		height: long_sep.height
-		MySep:
+		CustomSeparator:
 			id: long_sep
 			size_hint_x: 0.95
 			height: "3"
@@ -295,7 +276,7 @@
 		padding: [0, 5, 0, 5]
 		size_hint: 1, None
 		height: bottom_sep.height+5
-		MySep:
+		CustomSeparator:
 			id: bottom_sep
 
 	MDCard:
@@ -305,7 +286,7 @@
 		pos_hint: {"center_x": .5, "center_y": .5}
 		md_bg_color: [1, 1, 1, 1] if app.theme_cls.theme_style == "Light" else content_scroll.md_bg_color
 		ripple_behavior: True
-		elevation: 6# if app.theme_cls.theme_style == "Light" else 0
+		elevation: 3# if app.theme_cls.theme_style == "Light" else 0
 		radius: ["15dp"]
 		on_release: root.parent.parent.parent.dismiss()
 		MDLabel:
