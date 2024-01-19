@@ -140,7 +140,7 @@ class MainApp(MDApp, BoxLayout):
             for idps in ps.values():
                 idps.font_name = font
         except Exception as e:
-            print("Exeption : ==============>>>>>>", self, e)
+            print("Exeption changer_police : ==============>>>>>>", self, e)
 
         # Permet de changer dynamiquement le nom de la police
         ps.police_lb.text = font.split("/")[-1]
@@ -166,7 +166,7 @@ class MainApp(MDApp, BoxLayout):
             for idps in ps.values():
                 idps.font_size = taille
         except Exception as e:
-            print("Exeption : ==============>>>>>>", self, e)
+            print("Exeption changer_taille : ==============>>>>>>", self, e)
 
         # Permet de changer dynamiquement le nom de la police
         ps.taille_lb.text = taille
@@ -196,7 +196,7 @@ class MainApp(MDApp, BoxLayout):
         for idps in ps.values():
           idps.bold = gras
       except Exception as e:
-        print("Exeption : ==============>>>>>>", self, e)
+        print("Exeption metre_gras : ==============>>>>>>", self, e)
       
       # Permet de changer dynamiquement le nom de la police
       

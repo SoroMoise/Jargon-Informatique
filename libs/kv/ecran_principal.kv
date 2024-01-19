@@ -93,7 +93,7 @@
                       halign: 'justify'
             MDRelativeLayout:  # La bare d'en bas
               id: buttom_bar
-              radius: [40, 40, 0, 0]
+              radius: [40, 40, 10, 10]
               #elevation: 30
               md_bg_color: app.theme_cls.primary_dark
               #md_bg_color: get_color_from_hex("#70a0f0")
@@ -147,7 +147,7 @@
 
         MDNavigationDrawer:
           id: nav_drawer
-          radius: [0, 40, 40, 0]
+          radius: [10, 40, 40, 10]
           #type: "modal" standard
           type: "modal"  # Pourrais permettre de changer la façon dont la MDNavigationDrawer s'ouvre
           #md_bg_color: get_color_from_hex("#fff000")
@@ -155,7 +155,7 @@
           #scrim_color: [0, 1, 1, 1]
           swipe_edge_width: "20dp"  # la taille de l'espace dans laquelle la navigation sort quant on glisse le doigt
           #swipe_distance: 4  # la distance que doit parcourir le doigt avant que la Navigation commence à sortir
-          elevation:0
+          elevation:1
           #close_on_click: True
 
           ContentNavigationDrawer:

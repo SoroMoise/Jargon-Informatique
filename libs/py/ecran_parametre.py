@@ -112,14 +112,15 @@ class EcranParam(Screen, BoxLayout):
                     self.my_menu_polices.dismiss()
                     return True
             except Exception as e:
-                print("Exeption : ==============>>>>>>", self, e)
+                print("Exeption 27 et params: ==============>>>>>>", self, e)
 
             try:
-                if self.my_menu_taille.status == "open":
+                if (self.my_menu_taille and self.my_menu_taille.status == "open"):
+                  if self.my_menu_taille:
                     self.my_menu_taille.dismiss()
-                    return True
+                  return True
             except Exception as e:
-                print("Exeption : ==============>>>>>>", self, e)
+                print("Exeption open : ==============>>>>>>", self, e)
 
     def charger_app(self):
         """

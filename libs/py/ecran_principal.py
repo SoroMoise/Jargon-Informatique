@@ -82,7 +82,7 @@ class MainScreen(Screen, BoxLayout):
                               f'WHERE idmot = "{ref_label.lower()}"')[0][0]
             )
         except Exception as e:
-            print("Exeption : ==============>>>>>>", self, e)
+            print("Exeption onClickref con ref definde : ==============>>>>>>", self, e)
             toast(
                 text=f"Impossible d'afficher '{ref_label}', une erreur c'est produite", duration=4)
             return
@@ -113,7 +113,7 @@ class MainScreen(Screen, BoxLayout):
                     i.font_name = font_name
                     i.font_size = font_size
             except Exception as e:
-                print("Exeption : ==============>>>>>>", self, e)
+                print("Exeption on click ref in dialog ref: ==============>>>>>>", self, e)
         self.dialog_ref.open()
 
     def on_mouse(self, obj, x, y, clic, *args):
@@ -172,7 +172,7 @@ class MainScreen(Screen, BoxLayout):
             cls.mot.clear_widgets()
             cls.definition.clear_widgets()
         except Exception as e:
-            print("Exeption : ==============>>>>>>", cls, e)
+            print("Exeption vider_ecran : ==============>>>>>>", cls, e)
 
     @classmethod
     def obtenir_id_mot_actuel(cls) -> str:
@@ -195,7 +195,7 @@ class MainScreen(Screen, BoxLayout):
             existe: list = interroger_bd(
                 "id_mot", "aimer ", f'WHERE id_mot = "{idmot}"')[0][0]
         except Exception as e:
-            print("Exeption : ==============>>>>>>", cls, e)
+            print("Exeption exist lis interoge : ==============>>>>>>", cls, e)
             existe = []
 
         if existe == idmot:
@@ -360,6 +360,6 @@ class MainScreen(Screen, BoxLayout):
                     i.font_name = font_name
                     i.font_size = font_size
             except Exception as e:
-                print("Exeption : ==============>>>>>>", self, e)
+                print("Exeption for in dialog props : ==============>>>>>>", self, e)
 
         self.dialog_a_propos.open()
