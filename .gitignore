@@ -1,1 +1,19 @@
-__pycache__/
+# kivy init configuration
+config.ini
+
+# before deploy
+before_prod.todo.md
+
+# virtual env
+venv
+.venv
+
+# python compile folders
+__pycache__
+
+# internationnalization
+.*.swp
+
+# build apk
+.buildozer/
+bin/
