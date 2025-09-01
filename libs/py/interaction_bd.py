@@ -9,13 +9,19 @@ from random import choice
 from sqlite3 import connect
 from string import ascii_lowercase, digits
 from sys import exit
+from functools import lru_cache
 
 
 try:
-	connection = connect("src/base_de_donner/dictionnaire.sqlite")
+	# Use connection pool and optimize SQLite settings
+	connection = connect("src/base_de_donner/dictionnaire.sqlite", check_same_thread=False)
+	connection.execute("PRAGMA journal_mode=WAL")  # Better concurrency
+	connection.execute("PRAGMA cache_size=10000")  # 10MB cache
+	connection.execute("PRAGMA temp_store=MEMORY")  # Use memory for temp storage
+	connection.execute("PRAGMA synchronous=NORMAL")  # Faster writes
 	curseur = connection.cursor()
 except Exception as e:
-	print("Exeption : ==============>>>>>>", e)
+	print("Exception : ==============>>>>>>", e)
 	exit("Erreur lier a la base de donnée")
 
 
@@ -38,23 +44,30 @@ def profile(fct):
 	
 	return inner
 
+@lru_cache(maxsize=128)
+def interroger_bd_cached(valeur: str, table: str = "dictionnaire", condition: str = "") -> tuple:
+	"""
+	Cached version of database query for frequently accessed data
+	"""
+	curseur.execute(f"SELECT {valeur} FROM {table} {condition}")
+	result = curseur.fetchall()
+	return tuple(result)  # Return tuple for caching (lists aren't hashable)
+
 def interroger_bd(valeur: str, table: str = "dictionnaire", condition: str = "") -> list:
 	"""
-	print(f"la requette est SELEC")
 	permet de faire une requêtte à la Base de Donnée
 						Example de requete :
 	Simple : interroger_bd("mot", "dictionnaire", f"WHERE numero = '{numero + 1}'")
 	complexe : interroger_bd("mot, definition", "dictionnaire", f"WHERE numero = '{numero + 1}'")
-	request = "SELECT " + valeur + " FROM
 	"""
-	curseur.execute(f"SELECT {valeur} FROM {table} {condition}")
+	# Use cached version for read-only queries that are likely to be repeated
+	if "INSERT" not in condition.upper() and "UPDATE" not in condition.upper() and "DELETE" not in condition.upper():
+		result = interroger_bd_cached(valeur, table, condition)
+		return list(result)
 	
-	# j'essayais de regler le probleme des requette où le idmot contient de " ' " EX:"serveur d'application"
-	# if condition == "":
-	# 	curseur.execute('SELECT ? FROM ?', valeur, table)
-	# else:
-	# 	curseur.execute(f"SELECT {valeur} FROM {table} {condition}")
-	return curseur.fetchall()  # renvoie tout les rerultats de la requette
+	# Direct query for write operations
+	curseur.execute(f"SELECT {valeur} FROM {table} {condition}")
+	return curseur.fetchall()
 
 
 def ajouter_mot(table, id_mot, date) -> None:

@@ -3,3 +3,4 @@ kvdroid~=0.2.5
 kivymd~=1.1.1
 libs~=0.0.10
 kivmob~=2.0
+psutil~=5.9.0

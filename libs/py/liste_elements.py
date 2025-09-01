@@ -43,9 +43,17 @@ class ListeElements(Screen, BoxLayout):
 			ListeElements.element.reverse()
 			self.add_list()
 	
-	def add_list(self):
+	def add_list(self, batch_size=50):
+		"""
+		Add items to list with lazy loading for better performance
+		"""
 		if ListeElements.element:
-			for mot in ListeElements.element:
+			# Clear existing data
+			self.ids.id_liste_element.data = []
+			
+			# Load initial batch
+			initial_batch = ListeElements.element[:batch_size]
+			for mot in initial_batch:
 				self.ids.id_liste_element.data.append(
 					{
 						"viewclass": "CustomOneLineRightIconListItem",
@@ -53,8 +61,36 @@ class ListeElements(Screen, BoxLayout):
 						"callback": lambda x: x,
 					}
 				)
+			
+			# Schedule loading of remaining items if needed
+			if len(ListeElements.element) > batch_size:
+				from kivy.clock import Clock
+				Clock.schedule_once(
+					lambda dt: self._load_remaining_items(batch_size), 0.1
+				)
 		else:
 			self.ecran_est_vide()
+	
+	def _load_remaining_items(self, start_index, batch_size=25):
+		"""Load remaining items in smaller batches"""
+		end_index = min(start_index + batch_size, len(ListeElements.element))
+		
+		for i in range(start_index, end_index):
+			mot = ListeElements.element[i]
+			self.ids.id_liste_element.data.append(
+				{
+					"viewclass": "CustomOneLineRightIconListItem",
+					"text": mot[0],
+					"callback": lambda x: x,
+				}
+			)
+		
+		# Schedule next batch if more items remain
+		if end_index < len(ListeElements.element):
+			from kivy.clock import Clock
+			Clock.schedule_once(
+				lambda dt: self._load_remaining_items(end_index), 0.05
+			)
 	
 	def suprimer(self, mot: str) -> None:
 		"""
