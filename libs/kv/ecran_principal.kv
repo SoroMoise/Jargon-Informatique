@@ -15,15 +15,15 @@
             left_action_items: [["magnify", lambda x: [root.recherche(), root.focus()]]]
             right_action_items: [["dots-vertical", lambda x: root.affiche_menu(x)]]
 
-          MDBoxLayout:  # Toute la page sauf la Toolbar
-            orientation: "vertical"
-            md_bg_color: get_color_from_hex("#f2f2f2") if app.theme_cls.theme_style == "Light" else get_color_from_hex("#010101")
-            id: le_contenu
-            MDBoxLayout:  # Le mot à définir
-              md_bg_color: app.theme_cls.primary_dark
-              size_hint: 1, None #0.08
-              height: id_kv_mot.height + 10
-              padding: [30, 5, 5, 5]
+                      MDBoxLayout:  # Toute la page sauf la Toolbar
+              orientation: "vertical"
+              md_bg_color: get_color_from_hex("#f8f9fa") if app.theme_cls.theme_style == "Light" else get_color_from_hex("#121212")
+              id: le_contenu
+                          MDBoxLayout:  # Le mot à définir
+                md_bg_color: app.theme_cls.primary_color if app.theme_cls.theme_style == "Light" else app.theme_cls.primary_dark
+                size_hint: 1, None #0.08
+                height: id_kv_mot.height + 10
+                padding: [30, 5, 5, 5]
               MDLabel:  # Le mot a définir
                 id: id_kv_mot
                 text: ""
@@ -75,10 +75,10 @@
                       halign: 'justify'
                   MDBoxLayout:
                     id: box_def
-                    radius: [45, 45, 45, 45]
-                    padding: [10, 20, 10, 20]
-                    #elevation: 10
-                    md_bg_color: get_color_from_hex("#ffffff") if app.theme_cls.theme_style == "Light" else get_color_from_hex("#171717")
+                    radius: [20, 20, 20, 20]
+                    padding: [16, 20, 16, 20]
+                    elevation: 2
+                    md_bg_color: get_color_from_hex("#ffffff") if app.theme_cls.theme_style == "Light" else get_color_from_hex("#1e1e1e")
                     size_hint: 1, None
                     height: id_kv_definition.height + 40
                     MDLabel:  # La definition du mot

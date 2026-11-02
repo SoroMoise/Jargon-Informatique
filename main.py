@@ -20,6 +20,7 @@ from libs.py.ecran_parametre import EcranParam
 from libs.py.ecran_principal import MainScreen
 from libs.py.liste_elements import ListeElements
 from libs.py.screenmanager import screen_manager
+import gc
 
 # TODO: Faire en sorte qu'il y ait un retour à la ligne après chaque sens, car un mot peut en avoir plusieur
 # TODO: Faire en sorte qu'un message soit afficher si aucun mot n'est trouver (DÉJA FAIT)
@@ -82,19 +83,65 @@ class MainApp(MDApp, BoxLayout):
         self.theme_cls.theme_style = "Light"  # Light / Dark
         self.changer_couleur_bar_statut(self.theme_cls.primary_palette)
         self.d = time()
-        Builder.load_file("libs/kv/ecran_principal.kv")
+        
+        # Load KV files more efficiently
+        try:
+            # Load main screen first for faster initial display
+            Builder.load_file("libs/kv/ecran_principal.kv")
+            screen_manager.add_widget(MainScreen(name="main_screen"))
+            
+            # Load other screens lazily in the background
+            self._load_secondary_screens()
+            
+        except Exception as e:
+            print(f"Error loading KV files: {e}")
+            # Fallback to sequential loading
+            Builder.load_file("libs/kv/class_personnalisation.kv")
+            Builder.load_file("libs/kv/liste_elements.kv")
+            Builder.load_file("libs/kv/ecran_parametre.kv")
+            screen_manager.add_widget(ListeElements(name="liste_elements"))
+            screen_manager.add_widget(EcranParam(name="parametres"))
+        
+        return screen_manager
+    
+    def _load_secondary_screens(self):
+        """Load secondary screens after main screen is displayed"""
+        from kivy.clock import Clock
+        Clock.schedule_once(self._load_remaining_kv, 0.1)
+    
+    def _load_remaining_kv(self, dt):
+        """Load remaining KV files and screens"""
         Builder.load_file("libs/kv/class_personnalisation.kv")
         Builder.load_file("libs/kv/liste_elements.kv")
         Builder.load_file("libs/kv/ecran_parametre.kv")
-        screen_manager.add_widget(MainScreen(name="main_screen"))
         screen_manager.add_widget(ListeElements(name="liste_elements"))
         screen_manager.add_widget(EcranParam(name="parametres"))
-        return screen_manager
 
     def on_start(self):
-        print("Le temps de chargement est : ", time() - self.d)
+        loading_time = time() - self.d
+        print(f"Le temps de chargement est : {loading_time:.3f}s")
+        
+        # Initialize performance monitoring
+        try:
+            from libs.py.performance_monitor import perf_monitor
+            perf_monitor.log_performance("App Started")
+        except ImportError:
+            pass
 
     def on_pause(self):
+        # Clean up memory when app is paused
+        gc.collect()
+        return True
+    
+    def on_stop(self):
+        """Clean up resources when app stops"""
+        # Clear caches
+        from libs.py.interaction_bd import interroger_bd_cached
+        interroger_bd_cached.cache_clear()
+        
+        # Force garbage collection
+        gc.collect()
+        
         return True
 
     def on_key_press(self, window, key, *args):
